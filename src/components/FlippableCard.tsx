@@ -1,22 +1,24 @@
 import { useState, useRef } from 'react';
 import '../App.css';
-import sound from '../data/audios/cavaquinho.wav';
 
 interface FlippableCardProps {
     isFlipped?: boolean;
     onClick?: () => void;
     content: number;
+    audio: string;
 }
 
 export default function FlippableCard({
     isFlipped = false,
     content,
+    audio
 }: FlippableCardProps) {
     const [isPlaying, setIsPlaying] = useState(false);
-    const audioRef = useRef(new Audio(sound));
+    const audioRef = useRef(new Audio(audio));
 
     const toggleAudio = () => {
         const audio = audioRef.current;
+
         if (isPlaying) {
             audio.pause();
         } else {
@@ -24,7 +26,7 @@ export default function FlippableCard({
             audio.play();
         }
         setIsPlaying(!isPlaying);
-    };
+    }
 
     return (
         <button
