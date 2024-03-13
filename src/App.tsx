@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Game from './pages/Game';
 
 const App: React.FC = () => {
+
   return (
     <Router>
       <Routes>

@@ -35,6 +35,7 @@ function App() {
             <ChooseInstrument
                 show={modalShow}
                 onHide={() => setModalShow(false)}
+                onFamilySelect={(selectedFamilies) => { console.log(selectedFamilies); }}
             />
         </div>
     );
