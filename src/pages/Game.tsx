@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import FlippableCard from "../components/FlippableCard";
 import { instrumentsByFamily } from "../data/familys";
@@ -5,21 +6,23 @@ import { instrumentsByFamily } from "../data/familys";
 export default function Game() {
     const [isFlipped, setIsFlipped] = useState(false);
     const [cards, setCards] = useState<{ id: number; name: string; audio: string }[]>([]);
+    const selectedFamily: string | null = localStorage.getItem('selectedFamily');
 
     const handleFlip = () => {
         setIsFlipped(!isFlipped);
     };
 
     useEffect(() => {
-        const cardsCopy = [...instrumentsByFamily["CordasDedilhadas"]];
-        const lastCardId = cardsCopy[cardsCopy.length - 1].id;
-        const duplicatedCards = cardsCopy.map((card, index) => ({ ...card, id: index + lastCardId + 1 }));
-        const shuffledCards = shuffleArray([...cardsCopy, ...duplicatedCards]);
-        const shuffledAudio = shuffleArray(shuffledCards.map(card => card.audio));
-        const cardsWithAudio = shuffledCards.map((card, index) => ({ ...card, audio: shuffledAudio[index] }));
-        setCards(cardsWithAudio);
+        if (selectedFamily !== null && instrumentsByFamily[selectedFamily]) {
+            const cardsCopy = [...instrumentsByFamily[selectedFamily]];
+            const lastCardId = cardsCopy[cardsCopy.length - 1].id;
+            const duplicatedCards = cardsCopy.map((card, index) => ({ ...card, id: index + lastCardId + 1 }));
+            const shuffledCards = shuffleArray([...cardsCopy, ...duplicatedCards]);
+            const shuffledAudio = shuffleArray(shuffledCards.map(card => card.audio));
+            const cardsWithAudio = shuffledCards.map((card, index) => ({ ...card, audio: shuffledAudio[index] }));
+            setCards(cardsWithAudio);
+        }
     }, []);
-
 
     const shuffleArray = (array: any[]) => {
         for (let i = array.length - 1; i > 0; i--) {

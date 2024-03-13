@@ -53,13 +53,13 @@ export const instrumentFamilies: Array<string> = [
 ];
 
 export const instrumentsByFamily: { [key: string]: Array<{ id: number, name: string, audio: string }> } = {
-    "CordasDeArco": [
+    "Cordas de arco": [
         { id: 1, name: "Violino", audio: violinoAudio },
         { id: 2, name: "Viola Clássica", audio: violaAudio },
         { id: 3, name: "Violoncelo", audio: violonceloAudio },
         { id: 4, name: "Contrabaixo Acústico", audio: contrabaixoAcusticoAudio }
     ],
-    "CordasDedilhadas": [
+    "Cordas dedilhadas": [
         { id: 1, name: "Violão", audio: violaoAudio },
         { id: 2, name: "Viola Caipira", audio: violaCaipiraAudio },
         { id: 3, name: "Guitarra Elétrica", audio: guitarraAudio },
@@ -83,14 +83,14 @@ export const instrumentsByFamily: { [key: string]: Array<{ id: number, name: str
         { id: 5, name: "Fagote", audio: fagoteAudio },
         { id: 6, name: "Saxofone", audio: saxofoneAudio }
     ],
-    "percussãoMelodica": [
+    "percussão Melodica": [
         { id: 1, name: "Metalofone", audio: metalofoneAudio },
         { id: 2, name: "Xilofone", audio: xilofoneAudio },
         { id: 3, name: "Vibrafone", audio: vibrafoneAudio },
         { id: 4, name: "Sinos", audio: sinosAudio },
         { id: 5, name: "Tubos Sonoros", audio: tubosSonorosAudio }
     ],
-    "PercussãoRitmica": [
+    "Percussão Ritmica": [
         { id: 1, name: "Tímpanos", audio: timpanosAudio },
         { id: 2, name: "Pratos", audio: pratosAudio },
         { id: 3, name: "Triângulo", audio: trianguloAudio },
