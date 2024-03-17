@@ -12,19 +12,25 @@ interface ChooseInstrumentProps {
 }
 
 export function ChooseInstrument({ show, onHide, onFamilySelect }: ChooseInstrumentProps) {
-    const [selectedFamily, setSelectedFamily] = useState<string | null>(null);
+    const [selectedFamilies, setSelectedFamilies] = useState<string[]>([]);
 
     const navigate = useNavigate();
 
     const handleFamilySelect = (family: string) => {
-        setSelectedFamily(family);
+        const isFamilySelected = selectedFamilies.includes(family);
+
+        if (isFamilySelected) {
+            setSelectedFamilies(selectedFamilies.filter((selectedFamily) => selectedFamily !== family));
+        } else {
+            setSelectedFamilies([...selectedFamilies, family]);
+        }
     };
 
     const handleStartGame = () => {
-        if (selectedFamily) {
-            onFamilySelect([selectedFamily]);
+        if (selectedFamilies.length > 0) {
+            onFamilySelect(selectedFamilies);
             onHide();
-            localStorage.setItem('selectedFamily', selectedFamily);
+            localStorage.setItem('selectedFamilies', JSON.stringify(selectedFamilies));
             navigate("/jogo-memoria-instrumentos");
         }
     };
@@ -51,7 +57,7 @@ export function ChooseInstrument({ show, onHide, onFamilySelect }: ChooseInstrum
                             <Form.Check
                                 id={family}
                                 label={family}
-                                checked={(selectedFamily !== null && selectedFamily.includes(family)) || false}
+                                checked={selectedFamilies.includes(family)}
                                 onChange={() => handleFamilySelect(family)}
                             />
                         </div>

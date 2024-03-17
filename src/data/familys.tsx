@@ -47,8 +47,8 @@ export const instrumentFamilies: Array<string> = [
     "Cordas dedilhadas",
     "Metais",
     "Madeiras",
-    "Percussão Ritmica",
-    "Percussão Melodica",
+    "Percussao Ritmica",
+    "Percussao Melodica",
     "Teclas"
 ];
 
@@ -59,21 +59,31 @@ export const instrumentsByFamily: { [key: string]: Array<{ id: number, name: str
         { id: 3, name: "Violoncelo", audio: violonceloAudio },
         { id: 4, name: "Contrabaixo Acústico", audio: contrabaixoAcusticoAudio }
     ],
-    "Cordas dedilhadas": [
-        { id: 1, name: "Violão", audio: violaoAudio },
-        { id: 2, name: "Viola Caipira", audio: violaCaipiraAudio },
-        { id: 3, name: "Guitarra Elétrica", audio: guitarraAudio },
-        { id: 4, name: "Contrabaixo Elétrico", audio: contrabaixoEletricoaAudio },
-        { id: 5, name: "Ukelele", audio: ukeleleAudio },
-        { id: 6, name: "Cavaquinho", audio: cavaquinhoAudio },
-        { id: 7, name: "Banjo", audio: banjoAudio },
-        { id: 8, name: "Harpa", audio: harpaAudio }
-    ],
     "Metais": [
         { id: 1, name: "Trompete", audio: tromboneAudio },
         { id: 2, name: "Trombone", audio: trompaAudio },
         { id: 3, name: "Trompa", audio: trompeteAudio },
         { id: 4, name: "Tuba", audio: tubaAudio }
+    ],
+    "Percussao Ritmica": [
+        { id: 1, name: "Tímpanos", audio: timpanosAudio },
+        { id: 2, name: "Pratos", audio: pratosAudio },
+        { id: 3, name: "Triângulo", audio: trianguloAudio },
+        { id: 4, name: "Bateria", audio: bateriaAudio }
+    ],
+    "Percussao Melodica": [
+        { id: 1, name: "Metalofone", audio: metalofoneAudio },
+        { id: 2, name: "Xilofone", audio: xilofoneAudio },
+        { id: 3, name: "Vibrafone", audio: vibrafoneAudio },
+        { id: 4, name: "Sinos", audio: sinosAudio },
+        { id: 5, name: "Tubos Sonoros", audio: tubosSonorosAudio }
+    ],
+    "Teclas": [
+        { id: 1, name: "Piano", audio: pianoAudio },
+        { id: 2, name: "Teclado", audio: tecladoAudio },
+        { id: 3, name: "Órgão", audio: orgaoAudio },
+        { id: 4, name: "Sanfona", audio: sanfonaAudio },
+        { id: 5, name: "Escaleta", audio: escaletaAudio }
     ],
     "Madeiras": [
         { id: 1, name: "Flauta Doce", audio: flautaDoceAudio },
@@ -83,24 +93,14 @@ export const instrumentsByFamily: { [key: string]: Array<{ id: number, name: str
         { id: 5, name: "Fagote", audio: fagoteAudio },
         { id: 6, name: "Saxofone", audio: saxofoneAudio }
     ],
-    "percussão Melodica": [
-        { id: 1, name: "Metalofone", audio: metalofoneAudio },
-        { id: 2, name: "Xilofone", audio: xilofoneAudio },
-        { id: 3, name: "Vibrafone", audio: vibrafoneAudio },
-        { id: 4, name: "Sinos", audio: sinosAudio },
-        { id: 5, name: "Tubos Sonoros", audio: tubosSonorosAudio }
-    ],
-    "Percussão Ritmica": [
-        { id: 1, name: "Tímpanos", audio: timpanosAudio },
-        { id: 2, name: "Pratos", audio: pratosAudio },
-        { id: 3, name: "Triângulo", audio: trianguloAudio },
-        { id: 4, name: "Bateria", audio: bateriaAudio }
-    ],
-    "Teclas": [
-        { id: 1, name: "Piano", audio: pianoAudio },
-        { id: 2, name: "Teclado", audio: tecladoAudio },
-        { id: 3, name: "Órgão", audio: orgaoAudio },
-        { id: 4, name: "Sanfona", audio: sanfonaAudio },
-        { id: 5, name: "Escaleta", audio: escaletaAudio }
+    "Cordas dedilhadas": [
+        { id: 1, name: "Violão", audio: violaoAudio },
+        { id: 2, name: "Viola Caipira", audio: violaCaipiraAudio },
+        { id: 3, name: "Guitarra Elétrica", audio: guitarraAudio },
+        { id: 4, name: "Contrabaixo Elétrico", audio: contrabaixoEletricoaAudio },
+        { id: 5, name: "Ukelele", audio: ukeleleAudio },
+        { id: 6, name: "Cavaquinho", audio: cavaquinhoAudio },
+        { id: 7, name: "Banjo", audio: banjoAudio },
+        { id: 8, name: "Harpa", audio: harpaAudio }
     ]
 };
