@@ -1,6 +1,5 @@
 .background {
   background-image: url("./assets/back4.jpeg");
-  background-size: contain;
 }
 
 .button {
@@ -96,3 +95,6 @@
 .back {
   background-color: #d200fc;
 }
+
+.backHover:hover {
+  fill: #ffffff;}
