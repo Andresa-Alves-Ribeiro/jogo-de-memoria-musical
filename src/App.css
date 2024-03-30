@@ -1,5 +1,6 @@
-.background {
+body {
   background-image: url("./assets/back4.jpeg");
+  height: 100vh;
 }
 
 .button {
@@ -64,7 +65,6 @@
   font-style: normal;
 }
 
-/* styles.css */
 .card-container {
   perspective: 1000px;
 }
@@ -97,4 +97,9 @@
 }
 
 .backHover:hover {
-  fill: #ffffff;}
+  fill: #ffffff;
+}
+
+.card.playing .front {
+  background-color: red !important;
+}

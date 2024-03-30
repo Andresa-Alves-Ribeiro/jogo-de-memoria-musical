@@ -9,7 +9,7 @@ export default function Header() {
     }
 
     return (
-        <div className='bg-zinc-950 h-16 flex w-full'>
+        <div className='bg-zinc-950 h-20 flex w-full'>
             <button
                 onClick={goBack}
                 onMouseEnter={() => setIsHover(true)}
@@ -20,15 +20,15 @@ export default function Header() {
                         <ArrowLeft
                             size={45}
                             color="#a3a3a3"
-                            className="ml-8 mt-4 border-2 border-neutral-400 hover:border-white hover:text-white rounded-full p-2 backHover"
+                            className="ml-8 mt-2 border-2 border-neutral-400 hover:border-white hover:text-white rounded-full p-2 backHover"
                         />
-                        <p className="text-white kode-mono-font mt-8 text-xl">VOLTAR</p>
+                        <p className="text-white kode-mono-font mt-3 text-xl">VOLTAR</p>
                     </div>
                 ) : (
                     <ArrowLeft
                         size={45}
                         color="#a3a3a3"
-                        className="ml-8 mt-4 border-2 border-neutral-400 hover:border-white hover:text-white rounded-full p-2 backHover"
+                        className="ml-8 mt-2 border-2 border-neutral-400 hover:border-white hover:text-white rounded-full p-2 backHover"
                     />
                 )}
             </button>
