@@ -41,6 +41,18 @@ import pianoAudio from "./audios/teclas/piano.mp3"
 import sanfonaAudio from "./audios/teclas/sanfona.mp3"
 import tecladoAudio from "./audios/teclas/teclado.mp3"
 
+// IMAGENS
+
+import violinoImage from '../assets/instruments/violino.jpg';
+import violonceloImage from '../assets/instruments/violoncelo.jpg';
+import violaImage from '../assets/instruments/viola-classica.jpg';
+import contrabaixoAcusticoImage from '../assets/instruments/contrabaixo-acustico.jpg';
+
+import tromboneImage from '../assets/instruments/trombone.jpg';
+import trompaImage from '../assets/instruments/trompa.png';
+import trompeteImage from '../assets/instruments/trompete.jpg';
+import tubaImage from '../assets/instruments/tuba.webp';
+
 
 export const instrumentFamilies: Array<string> = [
     "Cordas de arco",
@@ -52,18 +64,18 @@ export const instrumentFamilies: Array<string> = [
     "Teclas"
 ];
 
-export const instrumentsByFamily: { [key: string]: Array<{ id: number, name: string, audio: string }> } = {
+export const instrumentsByFamily: { [key: string]: Array<{ id: number, name: string, audio: string, image: string }> } = {
     "Cordas de arco": [
-        { id: 1, name: "Violino", audio: violinoAudio },
-        { id: 2, name: "Viola Clássica", audio: violaAudio },
-        { id: 3, name: "Violoncelo", audio: violonceloAudio },
-        { id: 4, name: "Contrabaixo Acústico", audio: contrabaixoAcusticoAudio }
+        { id: 1, name: "Violino", audio: violinoAudio, image: violinoImage },
+        { id: 2, name: "Viola Clássica", audio: violaAudio, image: violaImage },
+        { id: 3, name: "Violoncelo", audio: violonceloAudio, image: violonceloImage },
+        { id: 4, name: "Contrabaixo Acústico", audio: contrabaixoAcusticoAudio, image: contrabaixoAcusticoImage }
     ],
     "Metais": [
-        { id: 1, name: "Trompete", audio: tromboneAudio },
-        { id: 2, name: "Trombone", audio: trompaAudio },
-        { id: 3, name: "Trompa", audio: trompeteAudio },
-        { id: 4, name: "Tuba", audio: tubaAudio }
+        { id: 1, name: "Trompete", audio: trompeteAudio, image: trompeteImage },
+        { id: 2, name: "Trombone", audio: tromboneAudio, image: tromboneImage },
+        { id: 3, name: "Trompa", audio: trompaAudio, image: trompaImage },
+        { id: 4, name: "Tuba", audio: tubaAudio, image: tubaImage }
     ],
     "Percussao Ritmica": [
         { id: 1, name: "Tímpanos", audio: timpanosAudio },

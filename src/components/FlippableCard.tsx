@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import { useEffect, useRef, useState } from 'react';
 import '../App.css';
 
 interface FlippableCardProps {
@@ -8,6 +10,9 @@ interface FlippableCardProps {
     content: number;
     audio: string;
     isDisabled: boolean;
+    name: string;
+    imageName: string;
+    onAudioEnded: () => void;
 }
 
 export default function FlippableCard({
@@ -16,24 +21,32 @@ export default function FlippableCard({
     onClick,
     content,
     audio,
-    isDisabled
+    isDisabled,
+    name,
+    imageName,
+    onAudioEnded 
 }: FlippableCardProps) {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const isLastPair = useRef(false);
-    const lastPairIds = useRef<number[]>([]);
-    
-    useEffect(() => {
-        return () => {
-            if (audioRef.current) {
-                audioRef.current.pause();
-                audioRef.current.currentTime = 0;
-            }
-        };
-    }, []);
 
     useEffect(() => {
-        setIsPlaying(false); // Reset isPlaying when card is flipped back
+        // Lidar com o término do áudio
+        const handleAudioEnded = () => {
+            onAudioEnded();
+        };
+
+        // Adicionando o evento 'ended' ao elemento de áudio para ouvir quando ele termina
+        if (audioRef.current) {
+            audioRef.current.addEventListener('ended', handleAudioEnded);
+            return () => {
+                audioRef.current?.removeEventListener('ended', handleAudioEnded);
+            };
+        }
+    }, [onAudioEnded]);
+
+    useEffect(() => {
+        setIsPlaying(false);
     }, [isFlipped]);
 
     useEffect(() => {
@@ -57,18 +70,15 @@ export default function FlippableCard({
                     element.currentTime = 0;
                 }
             });
-
-            if (lastPairIds.current.length === 2 && lastPairIds.current.indexOf(id) === -1) {
-                setIsPlaying(false);
-                audioRef.current?.pause();
-                setTimeout(() => {
-                    onClick();
-                }, 10000); // Change delay to 10 seconds
-            }
         }
     }, [id, isFlipped, onClick]);
 
     const handleCardClick = () => {
+        // Se o card já estiver selecionado, para a reprodução do áudio
+        if (isFlipped) {
+            setIsPlaying(false);
+            audioRef.current?.pause();
+        }
         onClick();
         toggleAudio();
     };
@@ -79,7 +89,7 @@ export default function FlippableCard({
             onClick={!isDisabled ? handleCardClick : undefined}
             disabled={isDisabled}
         >
-            <p className={`${isFlipped ? "back" : "front"} flex items-center justify-center text-zinc-100 text-7xl font-bold rounded-lg`}>
+            <p className={`${isFlipped ? "back" : "front"} ${isDisabled ? "disabled" : ""} flex items-center justify-center text-zinc-100 text-7xl font-bold rounded-lg`}>
                 {content}
             </p>
             <audio ref={audioRef} src={audio}></audio>
