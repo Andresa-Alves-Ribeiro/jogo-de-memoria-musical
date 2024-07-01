@@ -116,8 +116,6 @@ export default function Game(): JSX.Element {
                                 audio={card.audio}
                                 isDisabled={isDisabled}
                                 id={card.id}
-                                name={card.name}
-                                imageName={card.image}
                                 onAudioEnded={handleAudioEnded}
                             />
 
