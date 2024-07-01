@@ -53,6 +53,39 @@ import trompaImage from '../assets/instruments/trompa.png';
 import trompeteImage from '../assets/instruments/trompete.jpg';
 import tubaImage from '../assets/instruments/tuba.webp';
 
+import timpanosImage from '../assets/instruments/timpanos.jpg';
+import pratosImage from '../assets/instruments/pratos.jpg';
+import trianguloImage from '../assets/instruments/triangulo.webp';
+import bateriaImage from '../assets/instruments/bateria.jpg';
+
+import metalofoneImage from '../assets/instruments/metalofone.jpg';
+import xilofoneImage from '../assets/instruments/xilofone.webp';
+import vibrafoneImage from '../assets/instruments/vibrafone.jpg';
+import sinosImage from '../assets/instruments/sinos.jpeg';
+import tubosImage from '../assets/instruments/tubos-sonoros.jpg';
+
+import pianoImage from '../assets/instruments/piano.webp';
+import tecladoImage from '../assets/instruments/teclado.webp';
+import orgaoImage from '../assets/instruments/orgao.webp';
+import sanfonaImage from '../assets/instruments/sanfona.webp';
+import escaletaImage from '../assets/instruments/escaleta.webp';
+
+import flautaDoceImage from '../assets/instruments/flauta-doce.jpg';
+import flautaTransversalImage from '../assets/instruments/flauta-transversal.png';
+import clarineteImage from '../assets/instruments/clarinete.png';
+import oboeImage from '../assets/instruments/oboe.webp';
+import fagoteImage from '../assets/instruments/fagote.jpg';
+import saxofoneImage from '../assets/instruments/saxofone.jpeg';
+
+import violaoImage from '../assets/instruments/violão.jpg';
+import violaCaipiraImage from '../assets/instruments/viola-caipira.jpeg';
+import guitarraImage from '../assets/instruments/guitarra.jpeg';
+import contrabaixoImage from '../assets/instruments/contrabaixo-eletrico.jpeg';
+import ukeleleImage from '../assets/instruments/ukelele.jpeg';
+import cavaquinhoImage from '../assets/instruments/cavaquinho.webp';
+import banjoImage from '../assets/instruments/banjo.jpeg';
+import harpaImage from '../assets/instruments/harpa.jpeg';
+
 
 export const instrumentFamilies: Array<string> = [
     "Cordas de arco",
@@ -78,41 +111,41 @@ export const instrumentsByFamily: { [key: string]: Array<{ id: number, name: str
         { id: 4, name: "Tuba", audio: tubaAudio, image: tubaImage }
     ],
     "Percussao Ritmica": [
-        { id: 1, name: "Tímpanos", audio: timpanosAudio },
-        { id: 2, name: "Pratos", audio: pratosAudio },
-        { id: 3, name: "Triângulo", audio: trianguloAudio },
-        { id: 4, name: "Bateria", audio: bateriaAudio }
+        { id: 1, name: "Tímpanos", audio: timpanosAudio, image: timpanosImage},
+        { id: 2, name: "Pratos", audio: pratosAudio, image: pratosImage },
+        { id: 3, name: "Triângulo", audio: trianguloAudio, image: trianguloImage },
+        { id: 4, name: "Bateria", audio: bateriaAudio, image: bateriaImage }
     ],
     "Percussao Melodica": [
-        { id: 1, name: "Metalofone", audio: metalofoneAudio },
-        { id: 2, name: "Xilofone", audio: xilofoneAudio },
-        { id: 3, name: "Vibrafone", audio: vibrafoneAudio },
-        { id: 4, name: "Sinos", audio: sinosAudio },
-        { id: 5, name: "Tubos Sonoros", audio: tubosSonorosAudio }
+        { id: 1, name: "Metalofone", audio: metalofoneAudio, image: metalofoneImage },
+        { id: 2, name: "Xilofone", audio: xilofoneAudio, image: xilofoneImage },
+        { id: 3, name: "Vibrafone", audio: vibrafoneAudio, image: vibrafoneImage },
+        { id: 4, name: "Sinos", audio: sinosAudio, image: sinosImage },
+        { id: 5, name: "Tubos Sonoros", audio: tubosSonorosAudio, image: tubosImage }
     ],
     "Teclas": [
-        { id: 1, name: "Piano", audio: pianoAudio },
-        { id: 2, name: "Teclado", audio: tecladoAudio },
-        { id: 3, name: "Órgão", audio: orgaoAudio },
-        { id: 4, name: "Sanfona", audio: sanfonaAudio },
-        { id: 5, name: "Escaleta", audio: escaletaAudio }
+        { id: 1, name: "Piano", audio: pianoAudio, image: pianoImage },
+        { id: 2, name: "Teclado", audio: tecladoAudio, image: tecladoImage },
+        { id: 3, name: "Órgão", audio: orgaoAudio, image: orgaoImage },
+        { id: 4, name: "Sanfona", audio: sanfonaAudio, image: sanfonaImage },
+        { id: 5, name: "Escaleta", audio: escaletaAudio, image: escaletaImage }
     ],
     "Madeiras": [
-        { id: 1, name: "Flauta Doce", audio: flautaDoceAudio },
-        { id: 2, name: "Flauta Transversal", audio: flautaTransversalAudio },
-        { id: 3, name: "Clarinete", audio: clarineteAudio },
-        { id: 4, name: "Oboé", audio: oboeAudio },
-        { id: 5, name: "Fagote", audio: fagoteAudio },
-        { id: 6, name: "Saxofone", audio: saxofoneAudio }
+        { id: 1, name: "Flauta Doce", audio: flautaDoceAudio, image: flautaDoceImage },
+        { id: 2, name: "Flauta Transversal", audio: flautaTransversalAudio, image: flautaTransversalImage },
+        { id: 3, name: "Clarinete", audio: clarineteAudio, image: clarineteImage },
+        { id: 4, name: "Oboé", audio: oboeAudio, image: oboeImage },
+        { id: 5, name: "Fagote", audio: fagoteAudio, image: fagoteImage },
+        { id: 6, name: "Saxofone", audio: saxofoneAudio, image: saxofoneImage }
     ],
     "Cordas dedilhadas": [
-        { id: 1, name: "Violão", audio: violaoAudio },
-        { id: 2, name: "Viola Caipira", audio: violaCaipiraAudio },
-        { id: 3, name: "Guitarra Elétrica", audio: guitarraAudio },
-        { id: 4, name: "Contrabaixo Elétrico", audio: contrabaixoEletricoaAudio },
-        { id: 5, name: "Ukelele", audio: ukeleleAudio },
-        { id: 6, name: "Cavaquinho", audio: cavaquinhoAudio },
-        { id: 7, name: "Banjo", audio: banjoAudio },
-        { id: 8, name: "Harpa", audio: harpaAudio }
+        { id: 1, name: "Violão", audio: violaoAudio, image: violaoImage },
+        { id: 2, name: "Viola Caipira", audio: violaCaipiraAudio, image: violaCaipiraImage },
+        { id: 3, name: "Guitarra Elétrica", audio: guitarraAudio, image: guitarraImage },
+        { id: 4, name: "Contrabaixo Elétrico", audio: contrabaixoEletricoaAudio, image: contrabaixoImage },
+        { id: 5, name: "Ukelele", audio: ukeleleAudio, image: ukeleleImage },
+        { id: 6, name: "Cavaquinho", audio: cavaquinhoAudio, image: cavaquinhoImage },
+        { id: 7, name: "Banjo", audio: banjoAudio, image: banjoImage },
+        { id: 8, name: "Harpa", audio: harpaAudio, image: harpaImage }
     ]
 };
