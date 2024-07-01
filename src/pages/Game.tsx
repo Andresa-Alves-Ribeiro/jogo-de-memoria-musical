@@ -34,7 +34,7 @@ export default function Game(): JSX.Element {
 
     useEffect(() => {
         const allCards: Card[] = [];
-        const selectedFamilies: string[] = JSON.parse(localStorage.getItem('selectedFamilies') || '[]');
+        const selectedFamilies: string[] = JSON.parse(localStorage.getItem('selectedFamilies') ?? '[]');
 
         selectedFamilies.forEach(family => {
             if (instrumentsByFamily[family]) {
@@ -58,7 +58,6 @@ export default function Game(): JSX.Element {
 
         if (selectedCards.includes(card) || matchedCards.includes(card)) {
             setSelectedCards([]);
-            return;
         }
     };
 

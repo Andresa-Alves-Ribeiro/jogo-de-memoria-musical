@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useEffect, useRef, useState } from 'react';
@@ -10,8 +11,6 @@ interface FlippableCardProps {
     content: number;
     audio: string;
     isDisabled: boolean;
-    name: string;
-    imageName: string;
     onAudioEnded: () => void;
 }
 
@@ -22,9 +21,7 @@ export default function FlippableCard({
     content,
     audio,
     isDisabled,
-    name,
-    imageName,
-    onAudioEnded 
+    onAudioEnded
 }: FlippableCardProps) {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -76,7 +73,7 @@ export default function FlippableCard({
     const handleCardClick = () => {
         // Se o card já estiver selecionado, para a reprodução do áudio
         if (isFlipped) {
-            setIsPlaying(false);
+            setIsPlaying(!isPlaying); // Alterna o estado de reprodução do áudio
             audioRef.current?.pause();
         }
         onClick();
