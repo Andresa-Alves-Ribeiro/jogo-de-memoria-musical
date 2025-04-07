@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { 
-  MusicNote, 
-  MusicNotes, 
-  MusicNoteSimple, 
+import React, { useEffect, useState } from 'react';
+import {
+  MusicNote,
+  MusicNotes,
+  MusicNoteSimple,
   MusicNotesSimple,
   IconWeight
 } from "@phosphor-icons/react";
@@ -30,142 +30,55 @@ interface Note {
   glowDirection: number;
 }
 
-const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ className = '', children }) => {
+const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => {
+  const [notes, setNotes] = useState<Note[]>([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number>();
-  const notesRef = useRef<Note[]>([]);
-  const isInitializedRef = useRef(false);
-  const isMountedRef = useRef(false);
 
-  // Initialize notes
-  const initializeNotes = () => {
-    if (isInitializedRef.current) return;
+  // Função para atualizar o efeito de pulsar
+  const updatePulseEffect = (note: Note) => {
+    let newPulseSize = note.pulseSize;
+    let newPulseDirection = note.pulseDirection;
     
-    const newNotes: Note[] = [];
-    const numberOfNotes = 50;
-    const noteTypes = [
-      'MusicNote', 
-      'MusicNotes', 
-      'MusicNoteSimple', 
-      'MusicNotesSimple'
-    ];
-    const colors = [
-      '#FF00FF', // Magenta neon
-      '#00FF00', // Verde neon
-      '#00FFFF', // Ciano neon
-      '#FF0000', // Vermelho neon
-      '#0000FF', // Azul neon
-      '#FFFF00', // Amarelo neon
-    ];
-
-    for (let i = 0; i < numberOfNotes; i++) {
-      newNotes.push({
-        id: i,
-        x: Math.random() * dimensions.width,
-        y: Math.random() * dimensions.height,
-        size: Math.random() * 20 + 20,
-        speedX: (Math.random() - 0.5) * 2,
-        speedY: (Math.random() - 0.5) * 2,
-        noteType: noteTypes[Math.floor(Math.random() * noteTypes.length)],
-        color: colors[Math.floor(Math.random() * colors.length)],
-        rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 2,
-        pulseSpeed: Math.random() * 0.05 + 0.02,
-        pulseSize: 1,
-        pulseDirection: 1,
-        glowIntensity: Math.random() * 0.5 + 0.5,
-        glowDirection: 1,
-      });
+    if (note.pulseDirection === 1) {
+      newPulseSize += note.pulseSpeed;
+      if (newPulseSize >= 1.2) newPulseDirection = -1;
+    } else {
+      newPulseSize -= note.pulseSpeed;
+      if (newPulseSize <= 0.8) newPulseDirection = 1;
     }
-
-    notesRef.current = newNotes;
-    isInitializedRef.current = true;
+    
+    return { newPulseSize, newPulseDirection };
   };
 
-  // Update dimensions
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (!isMountedRef.current) return;
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-
-    return () => {
-      window.removeEventListener('resize', updateDimensions);
-    };
-  }, []);
-
-  // Initialize notes when dimensions change
-  useEffect(() => {
-    if (dimensions.width > 0 && dimensions.height > 0 && !isInitializedRef.current) {
-      initializeNotes();
+  // Função para atualizar o efeito de brilho
+  const updateGlowEffect = (note: Note) => {
+    let newGlowIntensity = note.glowIntensity;
+    let newGlowDirection = note.glowDirection;
+    
+    if (note.glowDirection === 1) {
+      newGlowIntensity += 0.02;
+      if (newGlowIntensity >= 1) newGlowDirection = -1;
+    } else {
+      newGlowIntensity -= 0.02;
+      if (newGlowIntensity <= 0.5) newGlowDirection = 1;
     }
-  }, [dimensions.width, dimensions.height]);
+    
+    return { newGlowIntensity, newGlowDirection };
+  };
 
-  // Animation loop
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !isInitializedRef.current) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let lastTime = 0;
-    const targetFPS = 60;
-    const frameInterval = 1000 / targetFPS;
-
-    const animate = (currentTime: number) => {
-      if (!isMountedRef.current) return;
-
-      const deltaTime = currentTime - lastTime;
-      if (deltaTime < frameInterval) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-        return;
-      }
-
-      lastTime = currentTime - (deltaTime % frameInterval);
-
-      if (!ctx || !canvas) return;
-
-      // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Update and draw notes
-      const updatedNotes = notesRef.current.map(note => {
-        // Update position
+  const updateNotes = React.useCallback(() => {
+    setNotes(prevNotes => {
+      return prevNotes.map(note => {
+        // Atualizar posição
         let newX = note.x + note.speedX;
         let newY = note.y + note.speedY;
         const newRotation = note.rotation + note.rotationSpeed;
 
-        // Update pulse
-        let newPulseSize = note.pulseSize;
-        let newPulseDirection = note.pulseDirection;
-        if (note.pulseDirection === 1) {
-          newPulseSize += note.pulseSpeed;
-          if (newPulseSize >= 1.2) newPulseDirection = -1;
-        } else {
-          newPulseSize -= note.pulseSpeed;
-          if (newPulseSize <= 0.8) newPulseDirection = 1;
-        }
+        // Atualizar efeitos
+        const { newPulseSize, newPulseDirection } = updatePulseEffect(note);
+        const { newGlowIntensity, newGlowDirection } = updateGlowEffect(note);
 
-        // Update glow
-        let newGlowIntensity = note.glowIntensity;
-        let newGlowDirection = note.glowDirection;
-        if (note.glowDirection === 1) {
-          newGlowIntensity += 0.02;
-          if (newGlowIntensity >= 1) newGlowDirection = -1;
-        } else {
-          newGlowIntensity -= 0.02;
-          if (newGlowIntensity <= 0.5) newGlowDirection = 1;
-        }
-
-        // Check boundaries
+        // Verificar limites
         if (newX < -note.size) newX = dimensions.width + note.size;
         if (newX > dimensions.width + note.size) newX = -note.size;
         if (newY < -note.size) newY = dimensions.height + note.size;
@@ -182,125 +95,147 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ className = '',
           glowDirection: newGlowDirection,
         };
       });
+    });
+  }, [dimensions]);
 
-      notesRef.current = updatedNotes;
-
-      // Draw notes
-      updatedNotes.forEach(note => {
-        ctx.save();
-        ctx.translate(note.x, note.y);
-        ctx.rotate((note.rotation * Math.PI) / 180);
-        ctx.scale(note.pulseSize, note.pulseSize);
-        
-        // Draw glow
-        ctx.shadowColor = note.color;
-        ctx.shadowBlur = 10 * note.glowIntensity;
-        
-        // Draw note
-        ctx.fillStyle = note.color;
-        ctx.globalAlpha = 0.8;
-        
-        // Simple note shape
-        ctx.beginPath();
-        ctx.arc(0, 0, note.size / 2, 0, Math.PI * 2);
-        ctx.fill();
-        
-        ctx.restore();
-      });
-
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
-
-    // Set canvas size
-    canvas.width = dimensions.width;
-    canvas.height = dimensions.height;
-
-    // Start animation
-    animationFrameRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [dimensions.width, dimensions.height]);
-
-  // Handle mounting/unmounting
+  // Efeito para inicializar as dimensões e as notas
   useEffect(() => {
-    isMountedRef.current = true;
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+
     return () => {
-      isMountedRef.current = false;
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      window.removeEventListener('resize', updateDimensions);
     };
   }, []);
 
+  // Efeito para inicializar as notas quando as dimensões mudarem
+  useEffect(() => {
+    if (dimensions.width > 0 && dimensions.height > 0) {
+      // Função para inicializar as notas
+      const initNotes = () => {
+        const newNotes: Note[] = [];
+        const numberOfNotes = 50;
+        const noteTypes = [
+          'MusicNote',
+          'MusicNotes',
+          'MusicNoteSimple',
+          'MusicNotesSimple'
+        ];
+        const colors = [
+          '#FF00FF', // Magenta neon
+          '#00FF00', // Verde neon
+          '#00FFFF', // Ciano neon
+          '#FF0000', // Vermelho neon
+          '#0000FF', // Azul neon
+          '#FFFF00', // Amarelo neon
+        ];
+
+        for (let i = 0; i < numberOfNotes; i++) {
+          newNotes.push({
+            id: i,
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
+            size: Math.random() * 20 + 20,
+            speedX: (Math.random() - 0.5) * 2,
+            speedY: (Math.random() - 0.5) * 2,
+            noteType: noteTypes[Math.floor(Math.random() * noteTypes.length)],
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360,
+            rotationSpeed: (Math.random() - 0.5) * 2,
+            pulseSpeed: Math.random() * 0.05 + 0.02,
+            pulseSize: 1,
+            pulseDirection: 1,
+            glowIntensity: Math.random() * 0.5 + 0.5,
+            glowDirection: 1,
+          });
+        }
+
+        setNotes(newNotes);
+      };
+      
+      initNotes();
+    }
+  }, [dimensions]);
+
+  // Efeito para animar as notas
+  useEffect(() => {
+    if (notes.length === 0) return;
+
+    const animationInterval = setInterval(updateNotes, 16); // Aproximadamente 60 FPS
+
+    return () => {
+      clearInterval(animationInterval);
+    };
+  }, [notes, updateNotes]);
+
+  // Função para renderizar um ícone de nota
+  const renderNoteIcon = (note: Note) => {
+    const containerStyle = {
+      position: 'absolute' as const,
+      left: `${note.x}px`,
+      top: `${note.y}px`,
+      transform: `rotate(${note.rotation}deg) scale(${note.pulseSize})`,
+      zIndex: 1,
+      width: `${note.size}px`,
+      height: `${note.size}px`,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    };
+
+    const iconStyle = {
+      color: note.color,
+      filter: `drop-shadow(0 0 ${10 * note.glowIntensity}px ${note.color})`,
+      opacity: 0.8,
+    };
+
+    const iconProps = {
+      size: note.size,
+      weight: "fill" as IconWeight,
+      style: iconStyle,
+    };
+
+    switch (note.noteType) {
+      case 'MusicNote':
+        return <div style={containerStyle}><MusicNote {...iconProps} /></div>;
+      case 'MusicNotes':
+        return <div style={containerStyle}><MusicNotes {...iconProps} /></div>;
+      case 'MusicNoteSimple':
+        return <div style={containerStyle}><MusicNoteSimple {...iconProps} /></div>;
+      case 'MusicNotesSimple':
+        return <div style={containerStyle}><MusicNotesSimple {...iconProps} /></div>;
+      default:
+        return <div style={containerStyle}><MusicNote {...iconProps} /></div>;
+    }
+  };
+
   return (
-    <div style={{ 
-      position: 'absolute', 
-      top: 0, 
-      left: 0, 
-      width: '100%', 
-      height: '100%', 
-      overflow: 'hidden'
-    }}>
+    <div className="relative w-screen h-full overflow-hidden">
       {/* Fundo gradiente */}
-      <div 
-        style={{ 
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(to bottom right, #000033, #330033)'
-        }}
-      />
-
-      {/* Grade de fundo */}
-      <div 
-        style={{ 
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundImage: 'linear-gradient(rgba(100, 100, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(100, 100, 255, 0.1) 1px, transparent 1px)',
-          backgroundSize: '50px 50px'
-        }}
-      />
-
-      {/* Efeito scanline */}
-      <div 
-        style={{ 
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 2px, transparent 2px, transparent 4px)'
-        }}
-      />
-
-      {/* Canvas for notes */}
-      <canvas
-        ref={canvasRef}
+      <div
+        className="absolute top-0 left-0 w-full h-full"
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none'
+          background: 'linear-gradient(to bottom, #323232 0%, #3F3F3F 50%, #1C1C1C 100%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%)',
+          backgroundBlendMode: 'multiply',
+          zIndex: 0
         }}
       />
+
+
+      {/* Notas musicais */}
+      <div className="absolute top-0 left-0 w-full h-full" style={{ zIndex: 3 }}>
+        {notes.map(note => renderNoteIcon(note))}
+      </div>
 
       {/* Conteúdo */}
-      <div style={{ 
-        position: 'relative',
-        width: '100%',
-        height: '100%'
-      }}>
+      <div className="relative z-10 w-full h-full">
         {children}
       </div>
     </div>

@@ -22,7 +22,7 @@ const Loading: React.FC<LoadingProps> = ({ text = "CARREGANDO..." }) => {
                             <MusicNote 
                                 size={32} 
                                 weight="fill"
-                                className="text-purple-500"
+                                className="text-blue-500"
                             />
                         </div>
                     ))}

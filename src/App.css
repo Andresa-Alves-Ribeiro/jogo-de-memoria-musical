@@ -32,7 +32,7 @@ p {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, #ff00ff, #00ff00, #00ffff, #ff00ff);
+  background: linear-gradient(45deg, #0066FF, #00ff00, #00ffff, #0066FF);
   background-size: 400%;
   z-index: 1;
   animation: glowing 20s linear infinite;
@@ -307,14 +307,13 @@ p {
 }
 
 .menu-container {
-  background: linear-gradient(145deg, #000033, #330033);
-  border: 2px solid #ff00ff;
+  background: linear-gradient(145deg, #2a2a2a, #3a3a3a);
+  border: 2px solid #666;
   border-radius: 15px;
   padding: 4rem;
   width: 80%;
   max-width: 800px;
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-  animation: glow 2s infinite alternate, neonBorder 8s infinite alternate;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -349,8 +348,8 @@ p {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(0, 102, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 102, 255, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;
   pointer-events: none;
   border-radius: 15px;
@@ -358,16 +357,13 @@ p {
 }
 
 .game-title {
-  color: #ff00ff;
+  color: #fff;
   font-size: 2.5rem;
   text-transform: uppercase;
   font-weight: bold;
-  text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff00ff,
-    0 0 30px #ff00ff;
   margin: 0 0 2rem 0;
   font-family: "Protest Revolution", sans-serif;
   letter-spacing: 2px;
-  animation: titleFloat 6s ease-in-out infinite;
   position: relative;
   z-index: 2;
 }
@@ -381,22 +377,22 @@ p {
 
 .game-title span:hover {
   transform: scale(1.1);
-  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+  text-shadow: 0 0 10px #0066FF, 0 0 20px #0066FF, 0 0 30px #0066FF;
   animation: neonPulse 2s infinite alternate;
 }
 
 @keyframes neonPulse {
   0% {
-    color: #ff00ff;
-    text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+    color: #0066FF;
+    text-shadow: 0 0 5px #0066FF, 0 0 10px #0066FF, 0 0 20px #0066FF;
   }
   50% {
     color: #00ffff;
     text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff;
   }
   100% {
-    color: #ff00ff;
-    text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+    color: #0066FF;
+    text-shadow: 0 0 5px #0066FF, 0 0 10px #0066FF, 0 0 20px #0066FF;
   }
 }
 
@@ -435,8 +431,8 @@ p {
   font-size: 1rem;
   padding: 1rem 2rem;
   background: transparent;
-  border: 2px solid #ff00ff;
-  color: #ff00ff;
+  border: 2px solid #666;
+  color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -456,7 +452,7 @@ p {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 0, 255, 0.2),
+    rgba(0, 102, 255, 0.2),
     transparent
   );
   transition: 0.5s;
@@ -468,54 +464,20 @@ p {
 
 .menu-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
-  animation: neonBorder 4s infinite alternate;
+  background: #444;
 }
 
 .menu-button.selected {
-  background: #ff00ff;
-  color: #000;
+  background: #444;
+  color: #fff;
   transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
-  animation: neonBackground 4s infinite alternate;
-}
-
-@keyframes neonBorder {
-  0% {
-    border-color: #ff00ff;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
-  }
-  50% {
-    border-color: #00ffff;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-  }
-  100% {
-    border-color: #ff00ff;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
-  }
-}
-
-@keyframes neonBackground {
-  0% {
-    background: #ff00ff;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
-  }
-  50% {
-    background: #00ffff;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
-  }
-  100% {
-    background: #ff00ff;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
-  }
 }
 
 .menu-controls {
-  color: #ff00ff;
+  color: #fff;
   font-family: "Kode Mono", monospace;
   font-size: 0.9rem;
   opacity: 0.7;
-  text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
 }
 
 .menu-controls p {
@@ -552,12 +514,12 @@ p {
 
 @keyframes titleGlow {
   from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff,
-      0 0 40px #ff00ff;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0066FF,
+      0 0 40px #0066FF;
   }
   to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6,
-      0 0 50px #ff4da6;
+    text-shadow: 0 0 20px #fff, 0 0 30px #4da6ff, 0 0 40px #4da6ff,
+      0 0 50px #4da6ff;
   }
 }
 
@@ -602,11 +564,11 @@ p {
   0%,
   100% {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
-      0 0 40px rgba(255, 0, 255, 0.3);
+      0 0 40px rgba(0, 102, 255, 0.3);
   }
   50% {
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.7),
-      0 0 60px rgba(255, 0, 255, 0.5);
+      0 0 60px rgba(0, 102, 255, 0.5);
   }
 }
 
@@ -622,10 +584,10 @@ p {
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
   }
   to {
-    box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+    box-shadow: 0 0 30px rgba(0, 102, 255, 0.5);
   }
 }
 
@@ -660,7 +622,7 @@ p {
 }
 
 .card.playing {
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
 }
 
 .card:not(.disabled):hover {
@@ -715,13 +677,13 @@ p {
 
 @keyframes matchedPulse {
   0% {
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
   }
   50% {
-    box-shadow: 0 0 40px rgba(255, 0, 255, 0.8);
+    box-shadow: 0 0 40px rgba(0, 102, 255, 0.8);
   }
   100% {
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
   }
 }
 
@@ -732,25 +694,25 @@ p {
 
 .grid-background {
   background-image: 
-    linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(0, 102, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 102, 255, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
 .neon-border {
   box-shadow: 
-    0 0 5px rgba(255, 0, 255, 0.5),
-    0 0 10px rgba(255, 0, 255, 0.3),
-    0 0 15px rgba(255, 0, 255, 0.2);
+    0 0 5px rgba(0, 102, 255, 0.5),
+    0 0 10px rgba(0, 102, 255, 0.3),
+    0 0 15px rgba(0, 102, 255, 0.2);
 }
 
 .hover-gradient {
-  background: linear-gradient(45deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+  background: linear-gradient(45deg, rgba(0, 102, 255, 0.1), rgba(0, 255, 255, 0.1));
   transition: background 0.3s ease;
 }
 
 .hover-gradient:hover {
-  background: linear-gradient(45deg, rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.2));
+  background: linear-gradient(45deg, rgba(0, 102, 255, 0.2), rgba(0, 255, 255, 0.2));
 }
 
 .glitch-effect {
@@ -791,10 +753,10 @@ p {
 
 @keyframes textGlow {
   0% {
-    text-shadow: 0 0 5px rgba(255, 0, 255, 0.5), 0 0 10px rgba(255, 0, 255, 0.3);
+    text-shadow: 0 0 5px rgba(0, 102, 255, 0.5), 0 0 10px rgba(0, 102, 255, 0.3);
   }
   100% {
-    text-shadow: 0 0 10px rgba(255, 0, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.5), 0 0 30px rgba(255, 0, 255, 0.3);
+    text-shadow: 0 0 10px rgba(0, 102, 255, 0.8), 0 0 20px rgba(0, 102, 255, 0.5), 0 0 30px rgba(0, 102, 255, 0.3);
   }
 }
 
@@ -853,11 +815,11 @@ p {
 @keyframes neonPulse {
   0% {
     opacity: 0.5;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 102, 255, 0.5);
   }
   100% {
     opacity: 1;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 30px rgba(255, 0, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.8), 0 0 30px rgba(0, 102, 255, 0.5);
   }
 }
 
@@ -909,9 +871,9 @@ p {
 
 @keyframes neonBorderPulse {
   0% {
-    box-shadow: 0 0 5px rgba(255, 0, 255, 0.5), 0 0 10px rgba(255, 0, 255, 0.3);
+    box-shadow: 0 0 5px rgba(0, 102, 255, 0.5), 0 0 10px rgba(0, 102, 255, 0.3);
   }
   100% {
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.5), 0 0 30px rgba(255, 0, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 102, 255, 0.8), 0 0 20px rgba(0, 102, 255, 0.5), 0 0 30px rgba(0, 102, 255, 0.3);
   }
 }

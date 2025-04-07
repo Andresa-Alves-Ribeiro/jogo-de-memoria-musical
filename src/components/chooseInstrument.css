@@ -13,13 +13,13 @@
 }
 
 .game-select-container {
-    background: linear-gradient(145deg, #000033, #330033);
-    border: 2px solid #FF00FF;
+    background: linear-gradient(145deg, #2a2a2a, #3a3a3a);
+    border: 2px solid #666;
     border-radius: 15px;
     padding: 2rem;
     width: 90%;
     max-width: 900px;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     animation: glow 2s infinite alternate;
     position: relative;
     overflow: hidden;
@@ -35,15 +35,15 @@
 }
 
 .game-title {
-    color: #FF00FF;
+    color: #fff;
     font-size: 2.5rem;
     text-transform: uppercase;
     font-weight: bold;
     text-shadow: 
-        0 0 5px #FF00FF,
-        0 0 5px #FF00FF,
-        0 0 5px #FF00FF,
-        0 0 5px #FF00FF;
+        0 0 5px #0066FF,
+        0 0 5px #0066FF,
+        0 0 5px #0066FF,
+        0 0 5px #0066FF;
     margin: 0;
     font-family: 'Protest Revolution', sans-serif;
     letter-spacing: 8px;
@@ -64,8 +64,8 @@
 
 .close-button {
     background: none;
-    border: 2px solid #FF00FF;
-    color: #FF00FF;
+    border: 2px solid #666;
+    color: #fff;
     font-size: 2rem;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -75,7 +75,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     padding: 0;
     line-height: 1;
     position: relative;
@@ -92,7 +92,7 @@
 
 .close-button:hover {
     transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+    background: #444;
 }
 
 .families-grid {
@@ -106,7 +106,7 @@
 
 .family-card {
     background: rgba(0, 0, 0, 0.7);
-    border: 1px solid #FF00FF;
+    border: 1px solid #666;
     border-radius: 8px;
     padding: 1.2rem;
     cursor: pointer;
@@ -128,7 +128,7 @@
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 0, 255, 0.2),
+        rgba(0, 102, 255, 0.2),
         transparent
     );
     transition: 0.5s;
@@ -140,23 +140,24 @@
 
 .family-card:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     border-width: 2px;
+    background: #444;
 }
 
 .family-card.selected {
-    background: rgba(255, 0, 255, 0.15);
-    border-color: #FF00FF;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
+    background: #444;
+    border-color: #666;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
     animation: selectedPulse 2s infinite alternate;
 }
 
 @keyframes selectedPulse {
     0% {
-        box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+        box-shadow: 0 0 15px rgba(0, 102, 255, 0.4);
     }
     100% {
-        box-shadow: 0 0 25px rgba(255, 0, 255, 0.7);
+        box-shadow: 0 0 25px rgba(0, 102, 255, 0.7);
     }
 }
 
@@ -176,24 +177,24 @@
 .selection-indicator {
     width: 30px;
     height: 30px;
-    border: 2px solid #FF00FF;
+    border: 2px solid #666;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
 }
 
 .family-card:hover .selection-indicator {
     transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .check-mark {
-    color: #FF00FF;
+    color: #fff;
     font-size: 1.4rem;
-    text-shadow: 0 0 5px #FF00FF;
+    text-shadow: 0 0 5px #0066FF;
     animation: checkPulse 1.5s infinite alternate;
 }
 
@@ -252,21 +253,22 @@
 }
 
 .game-button.primary {
-    background: #FF00FF;
-    color: #000;
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+    background: #444;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }
 
 .game-button.secondary {
     background: transparent;
-    border: 2px solid #FF00FF;
-    color: #FF00FF;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+    border: 2px solid #666;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .game-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    background: #555;
 }
 
 .game-button.disabled {
@@ -278,10 +280,10 @@
 
 @keyframes glow {
     from {
-        box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
     }
     to {
-        box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+        box-shadow: 0 0 30px rgba(0, 102, 255, 0.5);
     }
 }
 
@@ -314,8 +316,8 @@
     right: 0;
     bottom: 0;
     background-image: 
-        linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+        linear-gradient(rgba(0, 102, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 102, 255, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
     pointer-events: none;
     border-radius: 15px;

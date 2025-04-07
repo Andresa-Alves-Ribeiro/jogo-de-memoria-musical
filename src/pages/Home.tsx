@@ -24,7 +24,8 @@ function Home() {
             if (storedFamilies) {
                 const selectedFamilies = JSON.parse(storedFamilies);
                 if (selectedFamilies.length > 0) {
-                    navigate('/game');
+                    // Não redirecionar automaticamente, deixar o usuário escolher
+                    // navigate('/game');
                 }
             }
         } catch (error) {
@@ -79,9 +80,13 @@ function Home() {
 
     return (
         <div 
-            style={{ width: '100%', height: '100%', position: 'relative' }}
-            tabIndex={-1}
-            onKeyDown={handleKeyDown}
+            style={{ 
+                width: '100%', 
+                height: '100%', 
+                position: 'relative'
+            }}
+            role="application"
+            aria-label="Menu principal do jogo"
         >
             <AnimatedBackground>
                 <div style={{ 
@@ -91,7 +96,12 @@ function Home() {
                     width: '100%', 
                     height: '100%' 
                 }}>
-                    <div className='menu-container'>
+                    <div className='menu-container'
+                        tabIndex={0}
+                        onKeyDown={handleKeyDown}
+                        role="menu"
+                        aria-label="Menu de opções"
+                    >
                         <AnimatedTitle 
                             text="JOGO DA MEMÓRIA MUSICAL" 
                             className="game-title" 

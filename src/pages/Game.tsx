@@ -1,15 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useEffect, useRef } from "react";
-import FlippableCard from "../components/FlippableCard";
-import Header from "../components/header";
+import { FlippableCard } from "../components/FlippableCard";
 import { ShowInstrument } from "../components/showInstrument";
 import { Toaster } from "sonner";
 import { useGame } from "../contexts/GameContext";
-import AnimatedBackground from "../components/AnimatedBackground";
-import { useLocation } from "react-router-dom";
+import { useGameStats } from "../contexts/GameStatsContext";
+import { useGameSounds } from "../hooks/useGameSounds";
+import { GameStats } from "../components/GameStats";
+import { useState, useEffect } from "react";
+import ConfirmModal from "@/components/confirmModal";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Pause, Play } from "@phosphor-icons/react";
 
-export default function Game(): JSX.Element {
+export default function Game() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
+
     const {
         cards,
         selectedCards,
@@ -18,59 +24,190 @@ export default function Game(): JSX.Element {
         matchedInstrument,
         handleFlip,
         handleHideInstrumentModal,
-        handleAudioEnded
+        initializeGame
     } = useGame();
-        const location = useLocation();
-    const hasRedirected = useRef(false);
-    const isInitialMount = useRef(true);
 
-    // Verificar se há cards disponíveis
-    useEffect(() => {
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-            return;
-        }
+    const {
+        isPlaying,
+        startGame,
+        pauseGame,
+        incrementAttempts,
+        updateScore,
+    } = useGameStats();
 
-        if (cards.length === 0 && !hasRedirected.current && location.pathname === '/game') {
-            hasRedirected.current = true;
-            // Use window.location instead of navigate for more reliable redirection
-            window.location.href = '/';
-        }
-    }, [cards, location.pathname]);
+    const {
+        playFlipSound,
+        playMatchSound,
+        playVictorySound,
+        playButtonSound,
+        playErrorSound
+    } = useGameSounds();
 
     const cardListLength = (index: number): number => {
         return index + 1;
     };
 
+    const handleSurrender = () => {
+        playButtonSound();
+        setIsModalOpen(true);
+    }
+
+    const handleConfirmSurrender = () => {
+        playButtonSound();
+        setIsModalOpen(false);
+        localStorage.removeItem('selectedFamilies');
+        navigate('/', { replace: true });
+    }
+
+    // Iniciar o jogo quando o componente montar
+    useEffect(() => {
+        initializeGame();
+        startGame();
+        return () => {
+            pauseGame();
+        };
+    }, [initializeGame, startGame, pauseGame]);
+
+    // Atualizar pontuação quando encontrar pares
+    useEffect(() => {
+        const pairsFound = matchedCards.length / 2;
+        const totalPairs = cards.length / 2;
+        
+        // Só atualiza a pontuação se houver pares encontrados
+        if (pairsFound > 0) {
+            updateScore(pairsFound, totalPairs);
+        }
+
+        // Verificar vitória
+        if (pairsFound === totalPairs && totalPairs > 0) {
+            playVictorySound();
+        }
+    }, [matchedCards.length, cards.length, updateScore, playVictorySound]);
+
+    // Incrementar tentativas quando selecionar cards
+    useEffect(() => {
+        if (selectedCards.length === 2) {
+            incrementAttempts();
+            playFlipSound();
+        }
+    }, [incrementAttempts, playFlipSound, selectedCards.length]);
+
+    // Verificar match quando selecionar dois cards
+    useEffect(() => {
+        if (selectedCards.length === 2) {
+            const [firstCard, secondCard] = selectedCards;
+            if (firstCard.audio === secondCard.audio) {
+                playMatchSound();
+            } else {
+                playErrorSound();
+            }
+        }
+    }, [playErrorSound, playMatchSound, selectedCards, selectedCards.length]);
+
+    const handleTogglePause = () => {
+        playButtonSound();
+        if (isPlaying) {
+            pauseGame();
+        } else {
+            startGame();
+        }
+    };
+
     return (
-        <AnimatedBackground>
-            <div className="h-full w-screen">
-                <Header />
-                <div className='pt-8 flex items-center justify-center pb-10'>
-                    <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }} className='grid grid-cols-6 w-4/6 items-center gap-3 justify-center px-auto rounded-lg border-2 border-white'>
-                        {cards.map((card, index) => {
-                            const isFlipped = selectedCards.includes(card) || matchedCards.includes(card);
-                            const isDisabled = matchedCards.includes(card);
-                            return (
-                                <FlippableCard
-                                    key={index}
-                                    isFlipped={isFlipped}
-                                    onClick={() => handleFlip(card)}
-                                    content={cardListLength(index)}
-                                    audio={card.audio}
-                                    isDisabled={isDisabled}
-                                    id={card.id}
-                                    onAudioEnded={handleAudioEnded}
-                                    image={card.image}
-                                    name={card.name}
-                                />
-                            );
-                        })}
+        <div className="w-full min-h-screen flex flex-col items-center justify-start relative overflow-hidden py-6"
+            style={{
+                background: 'linear-gradient(to bottom, #323232 0%, #3F3F3F 50%, #1C1C1C 100%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%)',
+                backgroundBlendMode: 'multiply',
+            }}>
+            {/* Efeito de grade de fundo */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(128,128,128,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(128,128,128,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
+
+            {/* Efeito de scanline */}
+            <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.1)_0px,rgba(0,0,0,0.1)_2px,transparent_2px,transparent_4px)] opacity-50"></div>
+
+            {/* Botão de desistir */}
+            <div className="absolute top-4 left-4 z-20">
+                <button
+                    onClick={handleSurrender}
+                    className="group relative flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-800/50"
+                >
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-gray-600/20 blur-md rounded-full transition-all duration-300 group-hover:opacity-100 opacity-0"></div>
+                        <ArrowLeft
+                            size={32}
+                            className="text-white transition-all duration-300 group-hover:text-gray-300 relative z-10"
+                        />
                     </div>
-                </div>
-                <ShowInstrument show={showInstrumentModal} onHide={handleHideInstrumentModal} instrument={matchedInstrument} />
-                <Toaster richColors position="top-center" className="h-44" />
+                    <p className="text-white kode-mono-font text-lg font-bold tracking-wider transition-all duration-300 group-hover:text-gray-300">
+                        DESISTIR
+                    </p>
+                </button>
             </div>
-        </AnimatedBackground>
+
+            {/* Header com contador e botão de pause */}
+            <div className="w-max max-w-7xl px-2 sm:px-6 lg:px-8 relative z-10">
+                <div className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 flex items-center justify-end gap-6 border border-gray-700/50 shadow-lg">
+                    <GameStats />
+                    <button
+                        onClick={handleTogglePause}
+                        className="group relative flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-800/50"
+                    >
+                        <div className="relative">
+                            <div className="absolute inset-0 bg-gray-600/20 blur-md rounded-full transition-all duration-300 group-hover:opacity-100 opacity-0"></div>
+                            {isPlaying ? (
+                                <Pause
+                                    size={32}
+                                    className="text-white transition-all duration-300 group-hover:text-gray-300 relative z-10"
+                                />
+                            ) : (
+                                <Play
+                                    size={32}
+                                    className="text-white transition-all duration-300 group-hover:text-gray-300 relative z-10"
+                                />
+                            )}
+                        </div>
+                        <p className="text-white kode-mono-font text-lg font-bold tracking-wider transition-all duration-300 group-hover:text-gray-300">
+                            {isPlaying ? 'PAUSAR' : 'CONTINUAR'}
+                        </p>
+                    </button>
+                </div>
+            </div>
+
+            {/* Grid de cards */}
+            <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+                    {cards.map((card, index) => {
+                        const isFlipped = selectedCards.includes(card) || matchedCards.includes(card);
+                        const isDisabled = matchedCards.includes(card);
+                        return (
+                            <FlippableCard
+                                key={index}
+                                content={cardListLength(index)}
+                                isFlipped={isFlipped}
+                                isDisabled={isDisabled}
+                                image={card.image}
+                                name={card.name}
+                                onClick={() => handleFlip(card)}
+                            />
+                        );
+                    })}
+                </div>
+            </div>
+
+            <ShowInstrument
+                show={showInstrumentModal}
+                onHide={handleHideInstrumentModal}
+                instrument={matchedInstrument}
+            />
+
+            <ConfirmModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onConfirm={handleConfirmSurrender}
+                title="Desistir do Jogo"
+                message="Tem certeza que deseja desistir do jogo? Todo o progresso será perdido."
+            />
+            <Toaster richColors position="top-center" className="h-44" />
+        </div>
     );
 }

@@ -18,11 +18,10 @@
     align-items: center;
     gap: 2rem;
     padding: 2rem;
-    background: linear-gradient(145deg, #000033, #330033);
-    border: 2px solid #FF00FF;
+    background: linear-gradient(145deg, #2a2a2a, #3a3a3a);
+    border: 2px solid #666;
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-    animation: glow 2s infinite alternate;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
 }
@@ -54,8 +53,8 @@
     right: 0;
     bottom: 0;
     background-image: 
-        linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+        linear-gradient(rgba(0, 102, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 102, 255, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
     pointer-events: none;
     border-radius: 15px;
@@ -71,23 +70,18 @@
 
 .loading-note {
     animation: float 2s ease-in-out infinite;
-    filter: drop-shadow(0 0 10px #FF00FF);
+    color: #fff;
 }
 
 .loading-text {
-    color: #FF00FF;
+    color: #fff;
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
     font-family: 'Kode Mono', monospace;
     letter-spacing: 4px;
-    text-shadow: 
-        0 0 5px #FF00FF,
-        0 0 10px #FF00FF,
-        0 0 20px #FF00FF;
     position: relative;
     z-index: 2;
-    animation: pulse 2s infinite alternate;
 }
 
 @keyframes float {
@@ -106,24 +100,24 @@
     0% {
         opacity: 0.7;
         text-shadow: 
-            0 0 5px #FF00FF,
-            0 0 10px #FF00FF,
-            0 0 20px #FF00FF;
+            0 0 5px #0066FF,
+            0 0 10px #0066FF,
+            0 0 20px #0066FF;
     }
     100% {
         opacity: 1;
         text-shadow: 
-            0 0 10px #FF00FF,
-            0 0 20px #FF00FF,
-            0 0 30px #FF00FF;
+            0 0 10px #0066FF,
+            0 0 20px #0066FF,
+            0 0 30px #0066FF;
     }
 }
 
 @keyframes glow {
     from {
-        box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
     }
     to {
-        box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+        box-shadow: 0 0 30px rgba(0, 102, 255, 0.5);
     }
 } 
