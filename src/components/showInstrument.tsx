@@ -1,5 +1,5 @@
 import Modal from 'react-bootstrap/Modal';
-import { Card } from '../pages/Game';
+import { Card } from '../types/game';
 
 interface ShowInstrumentProps {
     show: boolean;
@@ -28,7 +28,7 @@ export function ShowInstrument({ show, onHide, instrument }: ShowInstrumentProps
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <img src={instrument.image} alt={`Foto do instrumento ${instrument.image}`} />
+                <img src={instrument.image} alt={`Foto do instrumento ${instrument.name}`} />
             </Modal.Body>
         </Modal>
     );

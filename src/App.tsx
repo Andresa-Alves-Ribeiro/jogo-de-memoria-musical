@@ -1,30 +1,29 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GameProvider } from './contexts/GameContext';
 import ErrorBoundary from './components/ErrorBoundary';
+import { Suspense } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Lazy loading dos componentes
-const Home = lazy(() => import('./pages/Home'));
-const Game = lazy(() => import('./pages/Game'));
+const Home = React.lazy(() => import('./pages/Home'));
+const Game = React.lazy(() => import('./pages/Game'));
 
-// Componente de loading
-const Loading = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gray-900">
-    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
-  </div>
-);
-
-const App: React.FC = () => {
+function App() {
   return (
     <ErrorBoundary>
       <Router>
         <GameProvider>
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/jogo-memoria-instrumentos" element={<Game />} />
-            </Routes>
-          </Suspense>
+          <div className="w-screen h-screen overflow-hidden">
+            <Suspense fallback={<div>Carregando...</div>}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/game" element={<Game />} />
+              </Routes>
+            </Suspense>
+            <ToastContainer />
+          </div>
         </GameProvider>
       </Router>
     </ErrorBoundary>

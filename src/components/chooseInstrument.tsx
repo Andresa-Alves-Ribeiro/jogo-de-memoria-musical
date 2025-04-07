@@ -28,10 +28,18 @@ export function ChooseInstrument({ show, onHide, onFamilySelect }: ChooseInstrum
 
     const handleStartGame = () => {
         if (selectedFamilies.length > 0) {
-            onFamilySelect(selectedFamilies);
-            onHide();
-            localStorage.setItem('selectedFamilies', JSON.stringify(selectedFamilies));
-            navigate("/jogo-memoria-instrumentos");
+            try {
+                localStorage.setItem('selectedFamilies', JSON.stringify(selectedFamilies));
+                onFamilySelect(selectedFamilies);
+                onHide();
+                navigate("/game");
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+                // Still proceed with the game even if localStorage fails
+                onFamilySelect(selectedFamilies);
+                onHide();
+                navigate("/game");
+            }
         }
     };
 

@@ -34,7 +34,23 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         const allCards: Card[] = [];
-        const selectedFamilies: string[] = JSON.parse(localStorage.getItem('selectedFamilies') ?? '[]');
+        let selectedFamilies: string[] = [];
+        
+        try {
+            const storedFamilies = localStorage.getItem('selectedFamilies');
+            if (storedFamilies) {
+                selectedFamilies = JSON.parse(storedFamilies);
+            }
+        } catch (error) {
+            console.error('Error loading families from localStorage:', error);
+            // If there's an error, use an empty array
+            selectedFamilies = [];
+        }
+
+        if (selectedFamilies.length === 0) {
+            toast.error('Nenhuma família de instrumentos selecionada');
+            return;
+        }
 
         selectedFamilies.forEach(family => {
             if (instrumentsByFamily[family]) {
@@ -46,6 +62,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                 toast.error(`Família ${family} não encontrada`);
             }
         });
+
+        if (allCards.length === 0) {
+            toast.error('Nenhuma família de instrumentos selecionada');
+            return;
+        }
 
         const shuffledCards = shuffleArray(allCards);
         setGameState(prev => ({ ...prev, cards: shuffledCards }));

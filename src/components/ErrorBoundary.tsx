@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -30,6 +30,13 @@ class ErrorBoundary extends Component<Props, State> {
           <div className="text-center p-8">
             <h1 className="text-4xl font-bold mb-4">Ops! Algo deu errado</h1>
             <p className="text-xl mb-4">Desculpe, ocorreu um erro inesperado.</p>
+            {this.state.error && (
+              <div className="bg-gray-800 p-4 rounded-lg mb-4 text-left overflow-auto max-h-40">
+                <p className="text-red-400 font-bold">Detalhes do erro:</p>
+                <p className="text-sm">{this.state.error.message}</p>
+                <p className="text-xs text-gray-400 mt-2">{this.state.error.stack}</p>
+              </div>
+            )}
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
               onClick={() => window.location.reload()}

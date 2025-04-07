@@ -48,9 +48,17 @@ export default function FlippableCard({
 
     useEffect(() => {
         if (isPlaying && isFlipped) {
-            audioRef.current?.pause();
+            try {
+                audioRef.current?.play().catch(error => {
+                    console.error('Erro ao reproduzir áudio:', error);
+                    setIsPlaying(false);
+                });
+            } catch (error) {
+                console.error('Erro ao reproduzir áudio:', error);
+                setIsPlaying(false);
+            }
         } else if (!isPlaying && isFlipped) {
-            audioRef.current?.play();
+            audioRef.current?.pause();
         }
     }, [isFlipped, isPlaying]);
 
@@ -89,7 +97,7 @@ export default function FlippableCard({
             <p className={`${isFlipped ? "back" : "front"} ${isDisabled ? "disabled" : ""} flex items-center justify-center text-zinc-100 text-7xl font-bold rounded-lg`}>
                 {content}
             </p>
-            <audio ref={audioRef} src={audio}></audio>
+            <audio ref={audioRef} src={audio} preload="auto"></audio>
         </button>
     );
 }
