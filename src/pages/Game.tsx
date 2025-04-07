@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import FlippableCard from "../components/FlippableCard";
 import Header from "../components/header";
 import { ShowInstrument } from "../components/showInstrument";
 import { Toaster } from "sonner";
 import { useGame } from "../contexts/GameContext";
 import AnimatedBackground from "../components/AnimatedBackground";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function Game(): JSX.Element {
     const {
@@ -20,16 +20,23 @@ export default function Game(): JSX.Element {
         handleHideInstrumentModal,
         handleAudioEnded
     } = useGame();
-    
-    const navigate = useNavigate();
+        const location = useLocation();
+    const hasRedirected = useRef(false);
+    const isInitialMount = useRef(true);
 
     // Verificar se há cards disponíveis
     useEffect(() => {
-        if (cards.length === 0) {
-            // Se não houver cards, redirecionar para a página inicial
-            navigate('/');
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            return;
         }
-    }, [cards, navigate]);
+
+        if (cards.length === 0 && !hasRedirected.current && location.pathname === '/game') {
+            hasRedirected.current = true;
+            // Use window.location instead of navigate for more reliable redirection
+            window.location.href = '/';
+        }
+    }, [cards, location.pathname]);
 
     const cardListLength = (index: number): number => {
         return index + 1;
@@ -54,6 +61,8 @@ export default function Game(): JSX.Element {
                                     isDisabled={isDisabled}
                                     id={card.id}
                                     onAudioEnded={handleAudioEnded}
+                                    image={card.image}
+                                    name={card.name}
                                 />
                             );
                         })}

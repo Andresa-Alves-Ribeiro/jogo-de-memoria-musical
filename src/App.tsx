@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GameProvider } from './contexts/GameContext';
 import ErrorBoundary from './components/ErrorBoundary';
-import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProtectedRoute from './components/ProtectedRoute';
+import Loading from './components/Loading';
 
 // Lazy loading dos componentes
 const Home = React.lazy(() => import('./pages/Home'));
@@ -15,11 +16,18 @@ function App() {
     <ErrorBoundary>
       <Router>
         <GameProvider>
-          <div className="w-screen h-screen overflow-hidden">
-            <Suspense fallback={<div>Carregando...</div>}>
+          <div style={{ width: '100%', height: '100%' }}>
+            <Suspense fallback={<Loading />}>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/game" element={<Game />} />
+                <Route 
+                  path="/game" 
+                  element={
+                    <ProtectedRoute>
+                      <Game />
+                    </ProtectedRoute>
+                  } 
+                />
               </Routes>
             </Suspense>
             <ToastContainer />

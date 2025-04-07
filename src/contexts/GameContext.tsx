@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { Card, GameState } from '../types/game';
 import { instrumentsByFamily } from '../data/familys';
 import { toast } from 'sonner';
@@ -22,58 +22,77 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
 
     const navigate = useNavigate();
+    const isInitialized = useRef(false);
+    const gameStateRef = useRef(gameState);
+    const initializationAttempted = useRef(false);
 
-    function shuffleArray<T>(array: T[]): T[] {
+    // Update ref when state changes
+    useEffect(() => {
+        gameStateRef.current = gameState;
+    }, [gameState]);
+
+    const shuffleArray = useCallback(<T,>(array: T[]): T[] => {
         const newArray = [...array];
         for (let i = newArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
         }
         return newArray;
-    }
-
-    useEffect(() => {
-        const allCards: Card[] = [];
-        let selectedFamilies: string[] = [];
-        
-        try {
-            const storedFamilies = localStorage.getItem('selectedFamilies');
-            if (storedFamilies) {
-                selectedFamilies = JSON.parse(storedFamilies);
-            }
-        } catch (error) {
-            console.error('Error loading families from localStorage:', error);
-            // If there's an error, use an empty array
-            selectedFamilies = [];
-        }
-
-        if (selectedFamilies.length === 0) {
-            toast.error('Nenhuma família de instrumentos selecionada');
-            return;
-        }
-
-        selectedFamilies.forEach(family => {
-            if (instrumentsByFamily[family]) {
-                const cardsCopy = [...instrumentsByFamily[family]];
-                const lastCardId = cardsCopy[cardsCopy.length - 1].id;
-                const duplicatedCards = cardsCopy.map((card, index) => ({ ...card, id: index + lastCardId + 1 }));
-                allCards.push(...cardsCopy, ...duplicatedCards);
-            } else {
-                toast.error(`Família ${family} não encontrada`);
-            }
-        });
-
-        if (allCards.length === 0) {
-            toast.error('Nenhuma família de instrumentos selecionada');
-            return;
-        }
-
-        const shuffledCards = shuffleArray(allCards);
-        setGameState(prev => ({ ...prev, cards: shuffledCards }));
     }, []);
 
-    const handleFlip = (card: Card): void => {
-        const { selectedCards, matchedCards } = gameState;
+    // Initialize game
+    useEffect(() => {
+        if (initializationAttempted.current) return;
+        initializationAttempted.current = true;
+
+        const initializeGame = () => {
+            if (isInitialized.current) return;
+            
+            const allCards: Card[] = [];
+            let selectedFamilies: string[] = [];
+            
+            try {
+                const storedFamilies = localStorage.getItem('selectedFamilies');
+                if (storedFamilies) {
+                    selectedFamilies = JSON.parse(storedFamilies);
+                }
+            } catch (error) {
+                console.error('Error loading families from localStorage:', error);
+                selectedFamilies = [];
+            }
+
+            if (selectedFamilies.length === 0) {
+                toast.error('Nenhuma família de instrumentos selecionada');
+                return;
+            }
+
+            selectedFamilies.forEach(family => {
+                if (instrumentsByFamily[family]) {
+                    const cardsCopy = [...instrumentsByFamily[family]];
+                    const lastCardId = cardsCopy[cardsCopy.length - 1].id;
+                    const duplicatedCards = cardsCopy.map((card, index) => ({ ...card, id: index + lastCardId + 1 }));
+                    allCards.push(...cardsCopy, ...duplicatedCards);
+                } else {
+                    toast.error(`Família ${family} não encontrada`);
+                }
+            });
+
+            if (allCards.length === 0) {
+                toast.error('Nenhuma família de instrumentos selecionada');
+                return;
+            }
+
+            const shuffledCards = shuffleArray(allCards);
+            setGameState(prev => ({ ...prev, cards: shuffledCards }));
+            isInitialized.current = true;
+        };
+
+        // Usar setTimeout para evitar problemas de inicialização
+        setTimeout(initializeGame, 0);
+    }, [shuffleArray]);
+
+    const handleFlip = useCallback((card: Card): void => {
+        const { selectedCards, matchedCards } = gameStateRef.current;
         if (!selectedCards.includes(card) && selectedCards.length < 2 && !matchedCards.includes(card)) {
             setGameState(prev => ({ ...prev, selectedCards: [...selectedCards, card] }));
         }
@@ -81,10 +100,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         if (selectedCards.includes(card) || matchedCards.includes(card)) {
             setGameState(prev => ({ ...prev, selectedCards: [] }));
         }
-    };
+    }, []);
 
+    // Check for matches
     useEffect(() => {
-        const { selectedCards, matchedCards, cards } = gameState;
+        const { selectedCards, matchedCards } = gameStateRef.current;
         if (selectedCards.length === 2) {
             const [firstCard, secondCard] = selectedCards;
             if (firstCard.audio === secondCard.audio) {
@@ -99,27 +119,28 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
     }, [gameState.selectedCards]);
 
+    // Check for win condition
     useEffect(() => {
-        const { matchedCards, cards } = gameState;
+        const { matchedCards, cards } = gameStateRef.current;
         if (matchedCards.length === cards.length && cards.length > 0) {
             toast.success("PARABÉNS!! Você ganhou!");
             setTimeout(() => {
-                navigate('/');
+                window.location.href = '/';
             }, 3000);
         }
-    }, [gameState.matchedCards, gameState.cards, navigate]);
+    }, [gameState.matchedCards.length, gameState.cards.length]);
 
-    const handleHideInstrumentModal = () => {
+    const handleHideInstrumentModal = useCallback(() => {
         setGameState(prev => ({ ...prev, showInstrumentModal: false }));
-    };
+    }, []);
 
-    const handleAudioEnded = () => {
-        const { selectedCards } = gameState;
+    const handleAudioEnded = useCallback(() => {
+        const { selectedCards } = gameStateRef.current;
         if (selectedCards.length === 1) {
             return;
         }
         setGameState(prev => ({ ...prev, selectedCards: [] }));
-    };
+    }, []);
 
     return (
         <GameContext.Provider

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { 
   MusicNote, 
   MusicNotes, 
   MusicNoteSimple, 
-  MusicNotesSimple
+  MusicNotesSimple,
+  IconWeight
 } from "@phosphor-icons/react";
 
 interface AnimatedBackgroundProps {
@@ -30,11 +31,17 @@ interface Note {
 }
 
 const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ className = '', children }) => {
-  const [notes, setNotes] = useState<Note[]>([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number>();
+  const notesRef = useRef<Note[]>([]);
+  const isInitializedRef = useRef(false);
+  const isMountedRef = useRef(false);
 
-  // Função para inicializar as notas
-  const initNotes = () => {
+  // Initialize notes
+  const initializeNotes = () => {
+    if (isInitializedRef.current) return;
+    
     const newNotes: Note[] = [];
     const numberOfNotes = 50;
     const noteTypes = [
@@ -72,19 +79,71 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ className = '',
       });
     }
 
-    setNotes(newNotes);
+    notesRef.current = newNotes;
+    isInitializedRef.current = true;
   };
 
-  // Função para atualizar as notas
-  const updateNotes = () => {
-    setNotes(prevNotes => {
-      return prevNotes.map(note => {
-        // Atualizar posição
+  // Update dimensions
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (!isMountedRef.current) return;
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+    };
+  }, []);
+
+  // Initialize notes when dimensions change
+  useEffect(() => {
+    if (dimensions.width > 0 && dimensions.height > 0 && !isInitializedRef.current) {
+      initializeNotes();
+    }
+  }, [dimensions.width, dimensions.height]);
+
+  // Animation loop
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !isInitializedRef.current) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let lastTime = 0;
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
+
+    const animate = (currentTime: number) => {
+      if (!isMountedRef.current) return;
+
+      const deltaTime = currentTime - lastTime;
+      if (deltaTime < frameInterval) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      lastTime = currentTime - (deltaTime % frameInterval);
+
+      if (!ctx || !canvas) return;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update and draw notes
+      const updatedNotes = notesRef.current.map(note => {
+        // Update position
         let newX = note.x + note.speedX;
         let newY = note.y + note.speedY;
-        let newRotation = note.rotation + note.rotationSpeed;
+        const newRotation = note.rotation + note.rotationSpeed;
 
-        // Efeito de pulsar
+        // Update pulse
         let newPulseSize = note.pulseSize;
         let newPulseDirection = note.pulseDirection;
         if (note.pulseDirection === 1) {
@@ -95,7 +154,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ className = '',
           if (newPulseSize <= 0.8) newPulseDirection = 1;
         }
 
-        // Efeito de brilho
+        // Update glow
         let newGlowIntensity = note.glowIntensity;
         let newGlowDirection = note.glowDirection;
         if (note.glowDirection === 1) {
@@ -106,7 +165,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ className = '',
           if (newGlowIntensity <= 0.5) newGlowDirection = 1;
         }
 
-        // Verificar limites
+        // Check boundaries
         if (newX < -note.size) newX = dimensions.width + note.size;
         if (newX > dimensions.width + note.size) newX = -note.size;
         if (newY < -note.size) newY = dimensions.height + note.size;
@@ -123,124 +182,125 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ className = '',
           glowDirection: newGlowDirection,
         };
       });
-    });
-  };
 
-  // Função para renderizar um ícone de nota
-  const renderNoteIcon = (note: Note) => {
-    const containerStyle = {
-      position: 'absolute' as const,
-      left: `${note.x}px`,
-      top: `${note.y}px`,
-      transform: `rotate(${note.rotation}deg) scale(${note.pulseSize})`,
-      zIndex: 1,
-      width: `${note.size}px`,
-      height: `${note.size}px`,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    };
+      notesRef.current = updatedNotes;
 
-    const iconStyle = {
-      color: note.color,
-      filter: `drop-shadow(0 0 ${10 * note.glowIntensity}px ${note.color})`,
-      opacity: 0.8,
-    };
-
-    const iconProps = {
-      size: note.size,
-      weight: "fill",
-      style: iconStyle,
-    };
-
-    switch (note.noteType) {
-      case 'MusicNote':
-        return <div style={containerStyle}><MusicNote {...iconProps} /></div>;
-      case 'MusicNotes':
-        return <div style={containerStyle}><MusicNotes {...iconProps} /></div>;
-      case 'MusicNoteSimple':
-        return <div style={containerStyle}><MusicNoteSimple {...iconProps} /></div>;
-      case 'MusicNotesSimple':
-        return <div style={containerStyle}><MusicNotesSimple {...iconProps} /></div>;
-      default:
-        return <div style={containerStyle}><MusicNote {...iconProps} /></div>;
-    }
-  };
-
-  // Efeito para inicializar as dimensões e as notas
-  useEffect(() => {
-    const updateDimensions = () => {
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
+      // Draw notes
+      updatedNotes.forEach(note => {
+        ctx.save();
+        ctx.translate(note.x, note.y);
+        ctx.rotate((note.rotation * Math.PI) / 180);
+        ctx.scale(note.pulseSize, note.pulseSize);
+        
+        // Draw glow
+        ctx.shadowColor = note.color;
+        ctx.shadowBlur = 10 * note.glowIntensity;
+        
+        // Draw note
+        ctx.fillStyle = note.color;
+        ctx.globalAlpha = 0.8;
+        
+        // Simple note shape
+        ctx.beginPath();
+        ctx.arc(0, 0, note.size / 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.restore();
       });
+
+      animationFrameRef.current = requestAnimationFrame(animate);
     };
 
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
+    // Set canvas size
+    canvas.width = dimensions.width;
+    canvas.height = dimensions.height;
+
+    // Start animation
+    animationFrameRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('resize', updateDimensions);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [dimensions.width, dimensions.height]);
+
+  // Handle mounting/unmounting
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
   }, []);
 
-  // Efeito para inicializar as notas quando as dimensões mudarem
-  useEffect(() => {
-    if (dimensions.width > 0 && dimensions.height > 0) {
-      initNotes();
-    }
-  }, [dimensions]);
-
-  // Efeito para animar as notas
-  useEffect(() => {
-    if (notes.length === 0) return;
-
-    const animationInterval = setInterval(() => {
-      updateNotes();
-    }, 16); // Aproximadamente 60 FPS
-
-    return () => {
-      clearInterval(animationInterval);
-    };
-  }, [notes]);
-
   return (
-    <div className="relative w-screen h-full overflow-hidden">
+    <div style={{ 
+      position: 'absolute', 
+      top: 0, 
+      left: 0, 
+      width: '100%', 
+      height: '100%', 
+      overflow: 'hidden'
+    }}>
       {/* Fundo gradiente */}
       <div 
-        className="absolute top-0 left-0 w-full h-full" 
         style={{ 
-          background: 'linear-gradient(to bottom right, #000033, #330033)',
-          zIndex: 0 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'linear-gradient(to bottom right, #000033, #330033)'
         }}
       />
 
       {/* Grade de fundo */}
       <div 
-        className="absolute top-0 left-0 w-full h-full" 
         style={{ 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
           backgroundImage: 'linear-gradient(rgba(100, 100, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(100, 100, 255, 0.1) 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
-          zIndex: 1 
+          backgroundSize: '50px 50px'
         }}
       />
 
       {/* Efeito scanline */}
       <div 
-        className="absolute top-0 left-0 w-full h-full" 
         style={{ 
-          background: 'repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 2px, transparent 2px, transparent 4px)',
-          zIndex: 2 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 2px, transparent 2px, transparent 4px)'
         }}
       />
 
-      {/* Notas musicais */}
-      <div className="absolute top-0 left-0 w-full h-full" style={{ zIndex: 3 }}>
-        {notes.map(note => renderNoteIcon(note))}
-      </div>
+      {/* Canvas for notes */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none'
+        }}
+      />
 
       {/* Conteúdo */}
-      <div className="relative z-10 w-full h-full">
+      <div style={{ 
+        position: 'relative',
+        width: '100%',
+        height: '100%'
+      }}>
         {children}
       </div>
     </div>

@@ -3,9 +3,10 @@ import React, { useEffect, useRef } from 'react';
 interface AnimatedTitleProps {
   text: string;
   className?: string;
+  dataText?: string;
 }
 
-const AnimatedTitle: React.FC<AnimatedTitleProps> = ({ text, className = '' }) => {
+const AnimatedTitle: React.FC<AnimatedTitleProps> = ({ text, className = '', dataText }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   
   useEffect(() => {
@@ -34,14 +35,14 @@ const AnimatedTitle: React.FC<AnimatedTitleProps> = ({ text, className = '' }) =
     return (
       <span
         key={index}
-        className="inline-block hover:scale-125 transition-transform float"
+        className="inline-block hover:scale-125 transition-transform"
         style={{
-          color,
+          color: '#FF00FF',
           textShadow: `
-            0 0 5px ${color},
-            0 0 10px ${color},
-            0 0 20px ${color},
-            0 0 30px ${color}
+            0 0 5px #FF00FF,
+            0 0 10px #FF00FF,
+            0 0 20px #FF00FF,
+            0 0 30px #FF00FF
           `,
           animationDelay
         }}
