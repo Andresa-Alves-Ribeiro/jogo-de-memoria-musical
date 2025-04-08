@@ -8,8 +8,10 @@ interface FlippableCardProps {
     content: string | number;
     isFlipped: boolean;
     isDisabled: boolean;
+    isSelected?: boolean;
     image?: string;
     name?: string;
+    audio?: string;
     onClick: () => void;
 }
 
@@ -17,28 +19,18 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
     content,
     isFlipped,
     isDisabled,
+    isSelected = false,
     image,
     name,
+    audio,
     onClick
 }) => {
-    const [isPlaying, setIsPlaying] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [glitchEffect, setGlitchEffect] = useState(false);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
     const isLastPair = useRef(false);
-    const playPromiseRef = useRef<Promise<void> | null>(null);
     const glitchIntervalRef = useRef<number | null>(null);
-
-    // Cleanup function for audio
-    const cleanupAudio = () => {
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-        }
-        if (playPromiseRef.current) {
-            playPromiseRef.current = null;
-        }
-    };
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const isFirstFlip = useRef(true);
 
     // Função para ativar efeito de glitch
     const triggerGlitch = () => {
@@ -63,68 +55,39 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
         };
     }, [isFlipped, isDisabled]);
 
+    // Efeito para reproduzir áudio quando o card é virado
+    useEffect(() => {
+        if (isFlipped && audio && !isDisabled) {
+            // Parar qualquer áudio que esteja tocando
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
+
+            // Criar e tocar novo áudio
+            audioRef.current = new Audio(audio);
+            audioRef.current.play()
+                .then(() => console.log('Áudio reproduzido com sucesso'))
+                .catch(error => console.error('Erro ao reproduzir áudio:', error));
+        } else if (!isFlipped && audioRef.current) {
+            // Parar o áudio quando o card é desvirado
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
+    }, [isFlipped, audio, isDisabled]);
+
+    // Limpar ao desmontar
     useEffect(() => {
         return () => {
-            cleanupAudio();
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
             if (glitchIntervalRef.current) {
                 clearInterval(glitchIntervalRef.current);
             }
         };
     }, []);
-
-    useEffect(() => {
-        const handleAudioEnded = () => {
-            setIsPlaying(false);
-        };
-
-        if (audioRef.current) {
-            audioRef.current.addEventListener('ended', handleAudioEnded);
-            return () => {
-                audioRef.current?.removeEventListener('ended', handleAudioEnded);
-            };
-        }
-    }, []);
-
-    useEffect(() => {
-        if (!isFlipped) {
-            setIsPlaying(false);
-            cleanupAudio();
-        }
-    }, [isFlipped]);
-
-    useEffect(() => {
-        if (isPlaying && isFlipped && audioRef.current) {
-            try {
-                cleanupAudio();
-                playPromiseRef.current = audioRef.current.play();
-                if (playPromiseRef.current) {
-                    playPromiseRef.current.catch(error => {
-                        console.error('Erro ao reproduzir áudio:', error);
-                        setIsPlaying(false);
-                        playPromiseRef.current = null;
-                    });
-                }
-            } catch (error) {
-                console.error('Erro ao reproduzir áudio:', error);
-                setIsPlaying(false);
-                playPromiseRef.current = null;
-            }
-        } else if (!isPlaying && isFlipped) {
-            cleanupAudio();
-        }
-    }, [isFlipped, isPlaying]);
-
-    useEffect(() => {
-        if (isFlipped) {
-            const otherAudioElements = Array.from(document.querySelectorAll('.card audio')) as HTMLAudioElement[];
-            otherAudioElements.forEach((element) => {
-                if (element !== audioRef.current) {
-                    element.pause();
-                    element.currentTime = 0;
-                }
-            });
-        }
-    }, [isFlipped]);
 
     const handleMouseEnter = () => {
         if (!isDisabled) {
@@ -161,7 +124,6 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
                 bg-gradient-to-br from-gray-800 to-gray-900
                 border-2 border-gray-600
                 rounded-lg
-                backface-hidden
                 ${isFlipped ? "opacity-0" : "opacity-100"}
                 ${isDisabled ? "" : "transition-opacity duration-300"}
             `}>
@@ -174,19 +136,22 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
             <div className={`
                 absolute inset-0
                 flex items-center justify-center
-                ${isDisabled ? "bg-gray-800" : "bg-gradient-to-br from-gray-800 to-gray-900"}
-                border-2 ${isDisabled ? "border-gray-500" : "border-gray-600"}
+                ${isDisabled ? "bg-gradient-to-br from-green-600 to-green-700" :
+                    isSelected ? "bg-gradient-to-br from-red-600 to-red-700" :
+                        "bg-gradient-to-br from-gray-800 to-gray-900"}
+                border-2 ${isDisabled ? "border-green-500" :
+                    isSelected ? "border-red-500" :
+                        "border-gray-600"}
                 rounded-lg
-                backface-hidden
                 ${isDisabled ? "" : "rotate-y-180"}
                 ${isFlipped ? "opacity-100" : "opacity-0"}
                 ${isDisabled ? "" : "transition-opacity duration-300"}
             `}>
                 {isDisabled && image ? (
                     <div className="w-full h-full flex flex-col items-center justify-center p-2">
-                        <img 
-                            src={image} 
-                            alt="Instrumento" 
+                        <img
+                            src={image}
+                            alt="Instrumento"
                             className="w-full h-auto max-h-[80%] object-contain rounded-md"
                         />
                         <div className="text-white text-sm mt-2 font-bold text-center">

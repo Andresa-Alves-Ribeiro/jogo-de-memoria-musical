@@ -110,6 +110,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                     matchedInstrument: firstCard,
                     showInstrumentModal: true,
                 }));
+            } else {
+                // Se não houver match, espera 1 segundo e vira os cards de volta
+                setTimeout(() => {
+                    setGameState(prev => ({
+                        ...prev,
+                        selectedCards: [],
+                    }));
+                }, 1000);
             }
         }
     }, [gameState.selectedCards]);

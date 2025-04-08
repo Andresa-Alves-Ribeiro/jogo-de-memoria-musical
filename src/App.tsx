@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GameProvider } from './contexts/GameContext';
 import { GameStatsProvider } from './contexts/GameStatsContext';
+import { AudioProvider } from './contexts/AudioContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,27 +18,29 @@ function App() {
   return (
     <ErrorBoundary>
       <Router>
-        <GameProvider>
-          <GameStatsProvider>
-            <div style={{ width: '100%', height: '100%' }}>
-              <Suspense fallback={<Loading />}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route 
-                    path="/game" 
-                    element={
-                      <ProtectedRoute>
-                        <Game />
-                      </ProtectedRoute>
-                    } 
-                  />
-                </Routes>
-              </Suspense>
-              <ToastContainer />
-              <Toaster richColors position="top-center" />
-            </div>
-          </GameStatsProvider>
-        </GameProvider>
+        <AudioProvider>
+          <GameProvider>
+            <GameStatsProvider>
+              <div style={{ width: '100%', height: '100%' }}>
+                <Suspense fallback={<Loading />}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route 
+                      path="/game" 
+                      element={
+                        <ProtectedRoute>
+                          <Game />
+                        </ProtectedRoute>
+                      } 
+                    />
+                  </Routes>
+                </Suspense>
+                <ToastContainer />
+                <Toaster richColors position="top-center" />
+              </div>
+            </GameStatsProvider>
+          </GameProvider>
+        </AudioProvider>
       </Router>
     </ErrorBoundary>
   );

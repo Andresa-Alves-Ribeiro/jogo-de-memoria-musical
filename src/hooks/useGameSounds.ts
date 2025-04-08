@@ -1,11 +1,8 @@
 import { useCallback } from 'react';
+import victorySound from '../assets/audio/victory.wav';
 
 const sounds = {
-    flip: new Audio('/sounds/flip.mp3'),
-    match: new Audio('/sounds/match.mp3'),
-    victory: new Audio('/sounds/victory.mp3'),
-    button: new Audio('/sounds/button.mp3'),
-    error: new Audio('/sounds/error.mp3')
+    victory: new Audio(victorySound)
 };
 
 export function useGameSounds() {
@@ -20,10 +17,6 @@ export function useGameSounds() {
     }, []);
 
     return {
-        playFlipSound: () => playSound('flip'),
-        playMatchSound: () => playSound('match'),
-        playVictorySound: () => playSound('victory'),
-        playButtonSound: () => playSound('button'),
-        playErrorSound: () => playSound('error')
+        playVictorySound: () => playSound('victory')
     };
 } 

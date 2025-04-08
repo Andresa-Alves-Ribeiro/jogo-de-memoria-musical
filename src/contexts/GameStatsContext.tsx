@@ -64,18 +64,20 @@ export function GameStatsProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     const updateScore = useCallback((pairsFound: number, totalPairs: number) => {
-        const completionPercentage = (pairsFound / totalPairs) * 100;
-        const timeBonus = Math.max(0, 1000 - stats.time * 10); // Bônus por tempo
-        const attemptsPenalty = stats.attempts * 50; // Penalidade por tentativas
-        const newScore = Math.max(0, completionPercentage * 10 + timeBonus - attemptsPenalty);
+        setStats(prev => {
+            const completionPercentage = (pairsFound / totalPairs) * 100;
+            const timeBonus = Math.max(0, 1000 - prev.time * 10); // Bônus por tempo
+            const attemptsPenalty = prev.attempts * 50; // Penalidade por tentativas
+            const newScore = Math.max(0, completionPercentage * 10 + timeBonus - attemptsPenalty);
 
-        setStats(prev => ({
-            ...prev,
-            score: newScore,
-            bestScore: Math.max(prev.bestScore, newScore),
-            bestTime: prev.bestTime === 0 ? prev.time : Math.min(prev.bestTime, prev.time)
-        }));
-    }, [stats.time, stats.attempts]);
+            return {
+                ...prev,
+                score: newScore,
+                bestScore: Math.max(prev.bestScore, newScore),
+                bestTime: prev.bestTime === 0 ? prev.time : Math.min(prev.bestTime, prev.time)
+            };
+        });
+    }, []);
 
     return (
         <GameStatsContext.Provider

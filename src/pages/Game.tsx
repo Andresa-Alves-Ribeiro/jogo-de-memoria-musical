@@ -7,7 +7,7 @@ import { useGame } from "../contexts/GameContext";
 import { useGameStats } from "../contexts/GameStatsContext";
 import { useGameSounds } from "../hooks/useGameSounds";
 import { GameStats } from "../components/GameStats";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ConfirmModal from "@/components/confirmModal";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Pause, Play } from "@phosphor-icons/react";
@@ -35,25 +35,18 @@ export default function Game() {
         updateScore,
     } = useGameStats();
 
-    const {
-        playFlipSound,
-        playMatchSound,
-        playVictorySound,
-        playButtonSound,
-        playErrorSound
-    } = useGameSounds();
+    const { playVictorySound } = useGameSounds();
+    const lastScoreUpdate = useRef(0);
 
     const cardListLength = (index: number): number => {
         return index + 1;
     };
 
     const handleSurrender = () => {
-        playButtonSound();
         setIsModalOpen(true);
     }
 
     const handleConfirmSurrender = () => {
-        playButtonSound();
         setIsModalOpen(false);
         localStorage.removeItem('selectedFamilies');
         navigate('/', { replace: true });
@@ -72,9 +65,10 @@ export default function Game() {
     useEffect(() => {
         const pairsFound = matchedCards.length / 2;
         const totalPairs = cards.length / 2;
-        
-        // Só atualiza a pontuação se houver pares encontrados
-        if (pairsFound > 0) {
+
+        // Só atualiza a pontuação se houver pares encontrados e se o número de pares mudou
+        if (pairsFound > 0 && pairsFound !== lastScoreUpdate.current) {
+            lastScoreUpdate.current = pairsFound;
             updateScore(pairsFound, totalPairs);
         }
 
@@ -88,24 +82,10 @@ export default function Game() {
     useEffect(() => {
         if (selectedCards.length === 2) {
             incrementAttempts();
-            playFlipSound();
         }
-    }, [incrementAttempts, playFlipSound, selectedCards.length]);
-
-    // Verificar match quando selecionar dois cards
-    useEffect(() => {
-        if (selectedCards.length === 2) {
-            const [firstCard, secondCard] = selectedCards;
-            if (firstCard.audio === secondCard.audio) {
-                playMatchSound();
-            } else {
-                playErrorSound();
-            }
-        }
-    }, [playErrorSound, playMatchSound, selectedCards, selectedCards.length]);
+    }, [incrementAttempts, selectedCards.length]);
 
     const handleTogglePause = () => {
-        playButtonSound();
         if (isPlaying) {
             pauseGame();
         } else {
@@ -133,14 +113,29 @@ export default function Game() {
                 >
                     <div className="relative">
                         <div className="absolute inset-0 bg-gray-600/20 blur-md rounded-full transition-all duration-300 group-hover:opacity-100 opacity-0"></div>
-                        <ArrowLeft
-                            size={32}
-                            className="text-white transition-all duration-300 group-hover:text-gray-300 relative z-10"
-                        />
+                        <ArrowLeft className="w-6 h-6 text-white" />
                     </div>
-                    <p className="text-white kode-mono-font text-lg font-bold tracking-wider transition-all duration-300 group-hover:text-gray-300">
-                        DESISTIR
-                    </p>
+                    <p className="text-white font-bold">DESISTIR</p>
+                </button>
+            </div>
+
+            {/* Botão de teste de áudio */}
+            <div className="absolute top-4 right-4 z-20">
+                <button
+                    onClick={() => {
+                        // Testar reprodução de áudio
+                        const audio = new Audio(cards[0]?.audio);
+                        audio.play()
+                            .then(() => console.log('Áudio de teste reproduzido com sucesso'))
+                            .catch(error => console.error('Erro ao reproduzir áudio de teste:', error));
+                    }}
+                    className="group relative flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-800/50"
+                >
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-gray-600/20 blur-md rounded-full transition-all duration-300 group-hover:opacity-100 opacity-0"></div>
+                        <span className="text-white text-2xl">🔊</span>
+                    </div>
+                    <p className="text-white font-bold">TESTAR ÁUDIO</p>
                 </button>
             </div>
 
@@ -185,8 +180,10 @@ export default function Game() {
                                 content={cardListLength(index)}
                                 isFlipped={isFlipped}
                                 isDisabled={isDisabled}
+                                isSelected={selectedCards.includes(card)}
                                 image={card.image}
                                 name={card.name}
+                                audio={card.audio}
                                 onClick={() => handleFlip(card)}
                             />
                         );
