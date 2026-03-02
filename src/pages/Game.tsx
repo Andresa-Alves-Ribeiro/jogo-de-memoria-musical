@@ -37,6 +37,7 @@ export default function Game() {
 
     const { playVictorySound } = useGameSounds();
     const lastScoreUpdate = useRef(0);
+    const testAudioRef = useRef<HTMLAudioElement | null>(null);
 
     const cardListLength = (index: number): number => {
         return index + 1;
@@ -93,6 +94,23 @@ export default function Game() {
         }
     };
 
+    const handleTestAudio = () => {
+        if (!cards[0]?.audio) return;
+
+        const currentAudio = testAudioRef.current;
+        if (currentAudio && !currentAudio.paused) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            return;
+        }
+
+        const audio = new Audio(cards[0].audio);
+        testAudioRef.current = audio;
+        audio.play()
+            .then(() => console.log('Áudio de teste reproduzido com sucesso'))
+            .catch(error => console.error('Erro ao reproduzir áudio de teste:', error));
+    };
+
     return (
         <div className="w-full min-h-screen flex flex-col items-center justify-start relative overflow-hidden py-6"
             style={{
@@ -122,13 +140,7 @@ export default function Game() {
             {/* Botão de teste de áudio */}
             <div className="absolute top-4 right-4 z-20">
                 <button
-                    onClick={() => {
-                        // Testar reprodução de áudio
-                        const audio = new Audio(cards[0]?.audio);
-                        audio.play()
-                            .then(() => console.log('Áudio de teste reproduzido com sucesso'))
-                            .catch(error => console.error('Erro ao reproduzir áudio de teste:', error));
-                    }}
+                    onClick={handleTestAudio}
                     className="group relative flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-800/50"
                 >
                     <div className="relative">
