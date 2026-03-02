@@ -3,18 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import { ChooseInstrument } from '../components/chooseInstrument';
+import { InstructionsModal } from '../components/InstructionsModal';
 import AnimatedBackground from '../components/AnimatedBackground';
 import AnimatedTitle from '../components/AnimatedTitle';
 
 function Home() {
     const [modalShow, setModalShow] = useState(false);
+    const [instructionsShow, setInstructionsShow] = useState(false);
     const [selectedOption, setSelectedOption] = useState(0);
     const navigate = useNavigate();
     const menuRef = useRef<HTMLDivElement>(null);
 
     const menuOptions = [
         { text: "INICIAR JOGO", action: () => setModalShow(true) },
-        { text: "INSTRUÇÕES", action: () => console.log("Instruções") },
+        { text: "INSTRUÇÕES", action: () => setInstructionsShow(true) },
         { text: "CRÉDITOS", isExternalLink: true, url: 'https://github.com/Andresa-Alves-Ribeiro' }
     ];
 
@@ -162,6 +164,11 @@ function Home() {
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 onFamilySelect={handleFamilySelect}
+            />
+
+            <InstructionsModal
+                show={instructionsShow}
+                onHide={() => setInstructionsShow(false)}
             />
         </div>
     );
