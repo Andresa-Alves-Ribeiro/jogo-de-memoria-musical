@@ -9,6 +9,7 @@ interface FlippableCardProps {
     isFlipped: boolean;
     isDisabled: boolean;
     isSelected?: boolean;
+    shouldPlayAudio?: boolean; // Evita tocar o mesmo instrumento 2x ao acertar o par
     image?: string;
     name?: string;
     audio?: string;
@@ -20,6 +21,7 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
     isFlipped,
     isDisabled,
     isSelected = false,
+    shouldPlayAudio = true,
     image,
     name,
     audio,
@@ -55,9 +57,9 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
         };
     }, [isFlipped, isDisabled]);
 
-    // Efeito para reproduzir áudio quando o card é virado
+    // Efeito para reproduzir áudio quando o card é virado (apenas 1x ao acertar o par)
     useEffect(() => {
-        if (isFlipped && audio && !isDisabled) {
+        if (isFlipped && audio && !isDisabled && shouldPlayAudio) {
             // Parar qualquer áudio que esteja tocando
             if (audioRef.current) {
                 audioRef.current.pause();
@@ -74,7 +76,7 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
             audioRef.current.pause();
             audioRef.current.currentTime = 0;
         }
-    }, [isFlipped, audio, isDisabled]);
+    }, [isFlipped, audio, isDisabled, shouldPlayAudio]);
 
     // Limpar ao desmontar
     useEffect(() => {

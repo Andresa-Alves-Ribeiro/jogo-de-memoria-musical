@@ -174,6 +174,10 @@ export default function Game() {
                     {cards.map((card, index) => {
                         const isFlipped = selectedCards.includes(card) || matchedCards.includes(card);
                         const isDisabled = matchedCards.includes(card);
+                        // Toca áudio do primeiro card; no segundo, só toca se for instrumento diferente (evita tocar 2x ao acertar o par)
+                        const isFirstCard = selectedCards.length > 0 && selectedCards[0] === card;
+                        const isSecondCardDifferent = selectedCards.length === 2 && selectedCards[0]?.audio !== card.audio;
+                        const shouldPlayAudio = isFirstCard || isSecondCardDifferent;
                         return (
                             <FlippableCard
                                 key={index}
@@ -181,6 +185,7 @@ export default function Game() {
                                 isFlipped={isFlipped}
                                 isDisabled={isDisabled}
                                 isSelected={selectedCards.includes(card)}
+                                shouldPlayAudio={shouldPlayAudio}
                                 image={card.image}
                                 name={card.name}
                                 audio={card.audio}
