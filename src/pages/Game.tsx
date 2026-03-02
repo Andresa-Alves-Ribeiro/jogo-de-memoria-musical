@@ -11,6 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import ConfirmModal from "@/components/confirmModal";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Pause, Play } from "@phosphor-icons/react";
+import imageMenu from "../assets/images/image-menu.png";
 
 export default function Game() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -112,16 +113,31 @@ export default function Game() {
     };
 
     return (
-        <div className="w-full min-h-screen flex flex-col items-center justify-start relative overflow-hidden py-6"
-            style={{
-                background: 'linear-gradient(to bottom, #323232 0%, #3F3F3F 50%, #1C1C1C 100%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%)',
-                backgroundBlendMode: 'multiply',
-            }}>
+        <div className="w-full min-h-screen flex flex-col items-center justify-start relative overflow-hidden py-6">
+            {/* Plano de fundo desfocado */}
+            <div
+                className="absolute inset-0 z-0"
+                style={{
+                    backgroundImage: `url(${imageMenu})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    filter: 'blur(12px)',
+                    transform: 'scale(1.1)',
+                }}
+            />
+            {/* Overlay escuro para legibilidade */}
+            <div
+                className="absolute inset-0 z-0"
+                style={{
+                    background: 'linear-gradient(to bottom, rgba(50,50,50,0.7) 0%, rgba(63,63,63,0.7) 50%, rgba(28,28,28,0.7) 100%)',
+                }}
+            />
             {/* Efeito de grade de fundo */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(128,128,128,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(128,128,128,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
+            <div className="absolute inset-0 z-[1] bg-[linear-gradient(rgba(128,128,128,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(128,128,128,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
 
             {/* Efeito de scanline */}
-            <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.1)_0px,rgba(0,0,0,0.1)_2px,transparent_2px,transparent_4px)] opacity-50"></div>
+            <div className="absolute inset-0 z-[1] bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.1)_0px,rgba(0,0,0,0.1)_2px,transparent_2px,transparent_4px)] opacity-50"></div>
 
             {/* Botão de desistir */}
             <div className="absolute top-4 left-4 z-20">

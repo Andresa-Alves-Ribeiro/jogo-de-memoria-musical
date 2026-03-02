@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import { ChooseInstrument } from '../components/chooseInstrument';
 import { InstructionsModal } from '../components/InstructionsModal';
-import AnimatedBackground from '../components/AnimatedBackground';
 import AnimatedTitle from '../components/AnimatedTitle';
+import imageMenu from '../assets/images/image-menu.png';
 
 function Home() {
     const [modalShow, setModalShow] = useState(false);
@@ -85,19 +85,22 @@ function Home() {
             style={{ 
                 width: '100%', 
                 height: '100%', 
-                position: 'relative'
+                position: 'relative',
+                backgroundImage: `url(${imageMenu})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
             }}
             role="application"
             aria-label="Menu principal do jogo"
         >
-            <AnimatedBackground>
-                <div style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    width: '100%', 
-                    height: '100%' 
-                }}>
+            <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                width: '100%', 
+                height: '100%' 
+            }}>
                     <div className='menu-container'
                         tabIndex={0}
                         onKeyDown={handleKeyDown}
@@ -158,7 +161,6 @@ function Home() {
                         </div>
                     </div>
                 </div>
-            </AnimatedBackground>
 
             <ChooseInstrument
                 show={modalShow}
