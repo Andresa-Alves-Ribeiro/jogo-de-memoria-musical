@@ -65,10 +65,14 @@ export function GameStatsProvider({ children }: { children: React.ReactNode }) {
 
     const updateScore = useCallback((pairsFound: number, totalPairs: number) => {
         setStats(prev => {
-            const completionPercentage = (pairsFound / totalPairs) * 100;
-            const timeBonus = Math.max(0, 1000 - prev.time * 10); // Bônus por tempo
-            const attemptsPenalty = prev.attempts * 50; // Penalidade por tentativas
-            const newScore = Math.max(0, completionPercentage * 10 + timeBonus - attemptsPenalty);
+            const completionRatio = pairsFound / totalPairs;
+            const timePenalty = prev.time * 10;
+            // Penaliza apenas tentativas extras (erros); mínimo necessário = totalPairs
+            const excessAttempts = Math.max(0, prev.attempts - totalPairs);
+            const attemptsPenalty = excessAttempts * 50;
+            // Pontuação máxima sempre 1000: jogo perfeito = 1000, deduz tempo e erros
+            const maxPossible = Math.max(0, 1000 - timePenalty - attemptsPenalty);
+            const newScore = Math.min(1000, Math.max(0, completionRatio * maxPossible));
 
             return {
                 ...prev,
