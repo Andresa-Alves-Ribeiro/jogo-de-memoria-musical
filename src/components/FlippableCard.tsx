@@ -10,6 +10,7 @@ interface FlippableCardProps {
     isDisabled: boolean;
     isSelected?: boolean;
     shouldPlayAudio?: boolean; // Evita tocar o mesmo instrumento 2x ao acertar o par
+    isPlaying?: boolean; // Bloqueia cliques quando o jogo está pausado
     image?: string;
     name?: string;
     audio?: string;
@@ -22,6 +23,7 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
     isDisabled,
     isSelected = false,
     shouldPlayAudio = true,
+    isPlaying = true,
     image,
     name,
     audio,
@@ -91,8 +93,10 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
         };
     }, []);
 
+    const isClickable = !isDisabled && isPlaying;
+
     const handleMouseEnter = () => {
-        if (!isDisabled) {
+        if (isClickable) {
             setIsHovered(true);
         }
     };
@@ -102,7 +106,7 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
     };
 
     const handleClick = () => {
-        if (!isDisabled) {
+        if (isClickable) {
             onClick();
         }
     };
@@ -111,9 +115,8 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
         <div
             className={`
                 relative w-full h-48
-                cursor-pointer
                 perspective-1000
-                ${isDisabled ? "cursor-default" : ""}
+                ${isClickable ? "cursor-pointer" : "cursor-default"}
             `}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -167,8 +170,8 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
                 )}
             </div>
 
-            {/* Efeito de borda - apenas para cards não combinados */}
-            {!isDisabled && (
+            {/* Efeito de borda - apenas para cards clicáveis (não combinados e jogo em andamento) */}
+            {isClickable && (
                 <div className={`
                     absolute -inset-1
                     rounded-lg

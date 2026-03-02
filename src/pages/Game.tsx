@@ -198,6 +198,7 @@ export default function Game() {
                                 isDisabled={isDisabled}
                                 isSelected={selectedCards.includes(card)}
                                 shouldPlayAudio={shouldPlayAudio}
+                                isPlaying={isPlaying}
                                 image={card.image}
                                 name={card.name}
                                 audio={card.audio}
