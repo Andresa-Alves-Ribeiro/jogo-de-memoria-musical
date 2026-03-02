@@ -215,6 +215,7 @@ export default function Game() {
                                 isSelected={selectedCards.includes(card)}
                                 shouldPlayAudio={shouldPlayAudio}
                                 isPlaying={isPlaying}
+                                showInstrumentModal={showInstrumentModal}
                                 image={card.image}
                                 name={card.name}
                                 audio={card.audio}

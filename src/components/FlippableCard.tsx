@@ -11,6 +11,7 @@ interface FlippableCardProps {
     isSelected?: boolean;
     shouldPlayAudio?: boolean; // Evita tocar o mesmo instrumento 2x ao acertar o par
     isPlaying?: boolean; // Bloqueia cliques quando o jogo está pausado
+    showInstrumentModal?: boolean; // Usado para parar o áudio quando o modal é fechado
     image?: string;
     name?: string;
     audio?: string;
@@ -24,6 +25,7 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
     isSelected = false,
     shouldPlayAudio = true,
     isPlaying = true,
+    showInstrumentModal = false,
     image,
     name,
     audio,
@@ -79,6 +81,14 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
             audioRef.current.currentTime = 0;
         }
     }, [isFlipped, audio, isDisabled, shouldPlayAudio]);
+
+    // Parar o áudio quando o modal do instrumento for fechado
+    useEffect(() => {
+        if (!showInstrumentModal && isDisabled && audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
+    }, [showInstrumentModal, isDisabled]);
 
     // Limpar ao desmontar
     useEffect(() => {
