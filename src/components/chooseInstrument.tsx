@@ -2,6 +2,7 @@ import { instrumentFamilies } from '../data/familys';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './chooseInstrument.css';
+import { useMenuHoverSound } from '../hooks/useMenuHoverSound';
 
 interface ChooseInstrumentProps {
     show: boolean;
@@ -12,6 +13,7 @@ interface ChooseInstrumentProps {
 export function ChooseInstrument({ show, onHide, onFamilySelect }: ChooseInstrumentProps) {
     const [selectedFamilies, setSelectedFamilies] = useState<string[]>([]);
     const navigate = useNavigate();
+    const playMenuHoverSound = useMenuHoverSound();
 
     const handleFamilySelect = (family: string) => {
         const isFamilySelected = selectedFamilies.includes(family);
@@ -46,7 +48,7 @@ export function ChooseInstrument({ show, onHide, onFamilySelect }: ChooseInstrum
             <div className="game-select-container">
                 <div className="game-select-header">
                     <h2 className="game-title float">ESCOLHA SUAS FAMÍLIAS</h2>
-                    <button className="close-button" onClick={onHide} aria-label="Fechar"><span>×</span></button>
+                    <button className="close-button" onClick={onHide} onMouseEnter={playMenuHoverSound} aria-label="Fechar"><span>×</span></button>
                 </div>
                 
                 <div className="families-grid">
@@ -55,6 +57,7 @@ export function ChooseInstrument({ show, onHide, onFamilySelect }: ChooseInstrum
                             key={family} 
                             className={`family-card ${selectedFamilies.includes(family) ? 'selected' : ''}`}
                             onClick={() => handleFamilySelect(family)}
+                            onMouseEnter={playMenuHoverSound}
                             aria-pressed={selectedFamilies.includes(family)}
                         >
                             <div className="family-content">
@@ -68,12 +71,13 @@ export function ChooseInstrument({ show, onHide, onFamilySelect }: ChooseInstrum
                 </div>
 
                 <div className="game-select-footer">
-                    <button className="game-button secondary" onClick={onHide}>
+                    <button className="game-button secondary" onClick={onHide} onMouseEnter={playMenuHoverSound}>
                         CANCELAR
                     </button>
                     <button 
                         className={`game-button primary ${selectedFamilies.length === 0 ? 'disabled' : ''}`}
                         onClick={handleStartGame}
+                        onMouseEnter={playMenuHoverSound}
                         disabled={selectedFamilies.length === 0}
                     >
                         INICIAR JOGO

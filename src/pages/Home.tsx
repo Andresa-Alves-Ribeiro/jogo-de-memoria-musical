@@ -6,6 +6,7 @@ import { ChooseInstrument } from '../components/chooseInstrument';
 import { InstructionsModal } from '../components/InstructionsModal';
 import AnimatedTitle from '../components/AnimatedTitle';
 import imageMenu from '../assets/images/image-menu.png';
+import { useMenuHoverSound } from '../hooks/useMenuHoverSound';
 
 function Home() {
     const [modalShow, setModalShow] = useState(false);
@@ -13,6 +14,7 @@ function Home() {
     const [selectedOption, setSelectedOption] = useState(0);
     const navigate = useNavigate();
     const menuRef = useRef<HTMLDivElement>(null);
+    const playMenuHoverSound = useMenuHoverSound();
 
     const menuOptions = [
         { text: "INICIAR JOGO", action: () => setModalShow(true) },
@@ -134,7 +136,7 @@ function Home() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={`menu-button no-underline ${selectedOption === index ? 'selected' : ''}`}
-                                        onMouseEnter={() => setSelectedOption(index)}
+                                        onMouseEnter={() => { setSelectedOption(index); playMenuHoverSound(); }}
                                         role="menuitem"
                                         aria-current={selectedOption === index ? "true" : undefined}
                                     >
@@ -145,7 +147,7 @@ function Home() {
                                         key={index}
                                         className={`menu-button ${selectedOption === index ? 'selected' : ''}`}
                                         onClick={option.action}
-                                        onMouseEnter={() => setSelectedOption(index)}
+                                        onMouseEnter={() => { setSelectedOption(index); playMenuHoverSound(); }}
                                         role="menuitem"
                                         aria-current={selectedOption === index ? "true" : undefined}
                                     >
