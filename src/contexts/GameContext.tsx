@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { Card, GameState } from '../types/game';
-import { instrumentsByFamily } from '../data/familys';
+import { instrumentsByFamily } from '../data/families';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
 
 interface GameContextType extends GameState {
     handleFlip: (card: Card) => void;
     handleHideInstrumentModal: () => void;
     handleAudioEnded: () => void;
+    initializeGame: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -21,20 +21,40 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         matchedInstrument: null,
     });
 
-    const navigate = useNavigate();
+    const isInitialized = useRef(false);
+    const gameStateRef = useRef(gameState);
 
-    function shuffleArray<T>(array: T[]): T[] {
+    // Update ref when state changes
+    useEffect(() => {
+        gameStateRef.current = gameState;
+    }, [gameState]);
+
+    const shuffleArray = useCallback(<T,>(array: T[]): T[] => {
         const newArray = [...array];
         for (let i = newArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
         }
         return newArray;
-    }
+    }, []);
 
-    useEffect(() => {
+    const initializeGame = useCallback(() => {
         const allCards: Card[] = [];
-        const selectedFamilies: string[] = JSON.parse(localStorage.getItem('selectedFamilies') ?? '[]');
+        let selectedFamilies: string[] = [];
+        
+        try {
+            const storedFamilies = localStorage.getItem('selectedFamilies');
+            if (storedFamilies) {
+                selectedFamilies = JSON.parse(storedFamilies);
+            }
+        } catch (error) {
+            console.error('Error loading families from localStorage:', error);
+            selectedFamilies = [];
+        }
+
+        if (selectedFamilies.length === 0) {
+            return;
+        }
 
         selectedFamilies.forEach(family => {
             if (instrumentsByFamily[family]) {
@@ -47,12 +67,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }
         });
 
-        const shuffledCards = shuffleArray(allCards);
-        setGameState(prev => ({ ...prev, cards: shuffledCards }));
-    }, []);
+        if (allCards.length === 0) {
+            toast.error('Nenhuma família de instrumentos selecionada');
+            return;
+        }
 
-    const handleFlip = (card: Card): void => {
-        const { selectedCards, matchedCards } = gameState;
+        const shuffledCards = shuffleArray(allCards);
+        setGameState(prev => ({ 
+            ...prev, 
+            cards: shuffledCards,
+            selectedCards: [],
+            matchedCards: [],
+            showInstrumentModal: false,
+            matchedInstrument: null
+        }));
+        isInitialized.current = true;
+    }, [shuffleArray]);
+
+    const handleFlip = useCallback((card: Card): void => {
+        const { selectedCards, matchedCards } = gameStateRef.current;
         if (!selectedCards.includes(card) && selectedCards.length < 2 && !matchedCards.includes(card)) {
             setGameState(prev => ({ ...prev, selectedCards: [...selectedCards, card] }));
         }
@@ -60,10 +93,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         if (selectedCards.includes(card) || matchedCards.includes(card)) {
             setGameState(prev => ({ ...prev, selectedCards: [] }));
         }
-    };
+    }, []);
 
+    // Check for matches
     useEffect(() => {
-        const { selectedCards, matchedCards, cards } = gameState;
+        const { selectedCards, matchedCards } = gameStateRef.current;
         if (selectedCards.length === 2) {
             const [firstCard, secondCard] = selectedCards;
             if (firstCard.audio === secondCard.audio) {
@@ -74,31 +108,40 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                     matchedInstrument: firstCard,
                     showInstrumentModal: true,
                 }));
+            } else {
+                // Se não houver match, espera 1 segundo e vira os cards de volta
+                setTimeout(() => {
+                    setGameState(prev => ({
+                        ...prev,
+                        selectedCards: [],
+                    }));
+                }, 1000);
             }
         }
     }, [gameState.selectedCards]);
 
+    // Check for win condition
     useEffect(() => {
-        const { matchedCards, cards } = gameState;
+        const { matchedCards, cards } = gameStateRef.current;
         if (matchedCards.length === cards.length && cards.length > 0) {
             toast.success("PARABÉNS!! Você ganhou!");
             setTimeout(() => {
-                navigate('/');
+                window.location.href = '/';
             }, 3000);
         }
-    }, [gameState.matchedCards, gameState.cards, navigate]);
+    }, [gameState.matchedCards.length, gameState.cards.length]);
 
-    const handleHideInstrumentModal = () => {
+    const handleHideInstrumentModal = useCallback(() => {
         setGameState(prev => ({ ...prev, showInstrumentModal: false }));
-    };
+    }, []);
 
-    const handleAudioEnded = () => {
-        const { selectedCards } = gameState;
+    const handleAudioEnded = useCallback(() => {
+        const { selectedCards } = gameStateRef.current;
         if (selectedCards.length === 1) {
             return;
         }
         setGameState(prev => ({ ...prev, selectedCards: [] }));
-    };
+    }, []);
 
     return (
         <GameContext.Provider
@@ -107,6 +150,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                 handleFlip,
                 handleHideInstrumentModal,
                 handleAudioEnded,
+                initializeGame,
             }}
         >
             {children}

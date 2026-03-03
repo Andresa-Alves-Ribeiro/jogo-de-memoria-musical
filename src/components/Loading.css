@@ -1,0 +1,123 @@
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    background: linear-gradient(145deg, #2a2a2a, #3a3a3a);
+    border: 2px solid #666;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1) 0px,
+        rgba(0, 0, 0, 0.1) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    pointer-events: none;
+    border-radius: 15px;
+    z-index: 1;
+}
+
+.loading-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(0, 102, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 102, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    border-radius: 15px;
+    z-index: 1;
+}
+
+.loading-notes {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.loading-note {
+    animation: float 2s ease-in-out infinite;
+    color: #fff;
+}
+
+.loading-text {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'Kode Mono', monospace;
+    letter-spacing: 4px;
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+    100% {
+        transform: translateY(0) rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.7;
+        text-shadow: 
+            0 0 5px #0066FF,
+            0 0 10px #0066FF,
+            0 0 20px #0066FF;
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 
+            0 0 10px #0066FF,
+            0 0 20px #0066FF,
+            0 0 30px #0066FF;
+    }
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
+    }
+    to {
+        box-shadow: 0 0 30px rgba(0, 102, 255, 0.5);
+    }
+} 
