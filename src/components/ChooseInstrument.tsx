@@ -1,7 +1,7 @@
-import { instrumentFamilies } from '../data/familys';
+import { instrumentFamilies } from '../data/families';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './chooseInstrument.css';
+import './ChooseInstrument.css';
 import { useMenuHoverSound } from '../hooks/useMenuHoverSound';
 
 interface ChooseInstrumentProps {

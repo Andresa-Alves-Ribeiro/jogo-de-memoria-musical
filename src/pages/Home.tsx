@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import { ChooseInstrument } from '../components/chooseInstrument';
+import { ChooseInstrument } from '../components/ChooseInstrument';
 import { InstructionsModal } from '../components/InstructionsModal';
 import AnimatedTitle from '../components/AnimatedTitle';
 import imageMenu from '../assets/images/image-menu.png';
@@ -16,11 +16,29 @@ function Home() {
     const menuRef = useRef<HTMLDivElement>(null);
     const playMenuHoverSound = useMenuHoverSound();
 
-    const menuOptions = [
+    const menuOptions = useMemo(() => [
         { text: "INICIAR JOGO", action: () => setModalShow(true) },
         { text: "INSTRUÇÕES", action: () => setInstructionsShow(true) },
         { text: "CRÉDITOS", isExternalLink: true, url: 'https://github.com/Andresa-Alves-Ribeiro' }
-    ];
+    ], []);
+
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setSelectedOption(prev => (prev > 0 ? prev - 1 : menuOptions.length - 1));
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setSelectedOption(prev => (prev < menuOptions.length - 1 ? prev + 1 : 0));
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            const option = menuOptions[selectedOption];
+            if (option.isExternalLink) {
+                window.open(option.url, '_blank');
+            } else if (option.action) {
+                option.action();
+            }
+        }
+    }, [menuOptions, selectedOption]);
 
     useEffect(() => {
         try {
@@ -56,25 +74,7 @@ function Home() {
         return () => {
             window.removeEventListener('keydown', handleGlobalKeyDown);
         };
-    }, []);
-
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            setSelectedOption(prev => (prev > 0 ? prev - 1 : menuOptions.length - 1));
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            setSelectedOption(prev => (prev < menuOptions.length - 1 ? prev + 1 : 0));
-        } else if (e.key === 'Enter') {
-            e.preventDefault();
-            const option = menuOptions[selectedOption];
-            if (option.isExternalLink) {
-                window.open(option.url, '_blank');
-            } else if (option.action) {
-                option.action();
-            }
-        }
-    };
+    }, [handleKeyDown]);
 
     const handleFamilySelect = (selectedFamilies: string[]) => {
         console.log('Famílias selecionadas:', selectedFamilies);

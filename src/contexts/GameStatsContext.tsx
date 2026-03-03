@@ -31,7 +31,7 @@ export function GameStatsProvider({ children }: { children: React.ReactNode }) {
 
     // Timer effect
     useEffect(() => {
-        let interval: NodeJS.Timeout;
+        let interval: ReturnType<typeof setInterval>;
         if (stats.isPlaying) {
             interval = setInterval(() => {
                 setStats(prev => ({ ...prev, time: prev.time + 1 }));

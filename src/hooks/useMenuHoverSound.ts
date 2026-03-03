@@ -26,8 +26,8 @@ export function useMenuHoverSound() {
 
             oscillator.start(ctx.currentTime);
             oscillator.stop(ctx.currentTime + 0.08);
-        } catch {
-            // Falha silenciosa
+        } catch (error) {
+            console.warn('Falha ao reproduzir som de hover:', error);
         }
     }, []);
 }

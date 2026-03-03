@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { Card, GameState } from '../types/game';
-import { instrumentsByFamily } from '../data/familys';
+import { instrumentsByFamily } from '../data/families';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
 
 interface GameContextType extends GameState {
     handleFlip: (card: Card) => void;
@@ -22,7 +21,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         matchedInstrument: null,
     });
 
-    const navigate = useNavigate();
     const isInitialized = useRef(false);
     const gameStateRef = useRef(gameState);
 

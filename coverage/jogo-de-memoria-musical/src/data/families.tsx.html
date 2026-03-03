@@ -1,0 +1,535 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for jogo-de-memoria-musical/src/data/families.tsx</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">jogo-de-memoria-musical/src/data</a> families.tsx</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>151/151</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/0</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>151/151</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import violinoAudio from './audios/cordasDeArco/violino.wav';
+import violonceloAudio from './audios/cordasDeArco/violoncelo.wav';
+import violaAudio from './audios/cordasDeArco/viola-classica.wav';
+import contrabaixoAcusticoAudio from './audios/cordasDeArco/contrabaixo-acustico.wav';
+&nbsp;
+import banjoAudio from './audios/cordasDedilhadas/banjo.wav';
+import cavaquinhoAudio from './audios/cordasDedilhadas/cavaquinho.wav';
+import contrabaixoEletricoaAudio from './audios/cordasDedilhadas/contrabaixo-eletrico.wav';
+import guitarraAudio from './audios/cordasDedilhadas/guitarra.wav';
+import harpaAudio from './audios/cordasDedilhadas/harpa.wav';
+import ukeleleAudio from './audios/cordasDedilhadas/ukelele.wav';
+import violaCaipiraAudio from './audios/cordasDedilhadas/viola-caipira.wav';
+import violaoAudio from './audios/cordasDedilhadas/violao.wav';
+&nbsp;
+import tromboneAudio from './audios/metais/trombone.wav';
+import trompaAudio from './audios/metais/trompa.wav';
+import trompeteAudio from './audios/metais/trompete.wav';
+import tubaAudio from './audios/metais/tuba.wav';
+&nbsp;
+import fagoteAudio from "./audios/madeiras/fagote.wav"
+import clarineteAudio from "./audios/madeiras/clarinete.mp3"
+import flautaDoceAudio from "./audios/madeiras/flauta-doce.mp3"
+import flautaTransversalAudio from "./audios/madeiras/flauta-transversal.mp3"
+import oboeAudio from "./audios/madeiras/oboe.mp3"
+import saxofoneAudio from "./audios/madeiras/saxofone.mp3"
+&nbsp;
+import metalofoneAudio from "./audios/percussãoMelodica/metalofone.mp3"
+import sinosAudio from "./audios/percussãoMelodica/sinos.mp3"
+import tubosSonorosAudio from "./audios/percussãoMelodica/tubos-sonoros.mp3"
+import vibrafoneAudio from "./audios/percussãoMelodica/vibrafone.mp3"
+import xilofoneAudio from "./audios/percussãoMelodica/xilofone.mp3"
+&nbsp;
+import bateriaAudio from "./audios/percussãoRitmica/bateria.mp3"
+import pratosAudio from "./audios/percussãoRitmica/pratos.mp3"
+import timpanosAudio from "./audios/percussãoRitmica/timpanos.mp3"
+import trianguloAudio from "./audios/percussãoRitmica/triangulo.mp3"
+&nbsp;
+import escaletaAudio from "./audios/teclas/escaleta.mp3"
+import orgaoAudio from "./audios/teclas/orgao.mp3"
+import pianoAudio from "./audios/teclas/piano.mp3"
+import sanfonaAudio from "./audios/teclas/sanfona.mp3"
+import tecladoAudio from "./audios/teclas/teclado.mp3"
+&nbsp;
+// IMAGENS
+&nbsp;
+import violinoImage from '../assets/instruments/violino.jpg';
+import violonceloImage from '../assets/instruments/violoncelo.jpg';
+import violaImage from '../assets/instruments/viola-classica.jpg';
+import contrabaixoAcusticoImage from '../assets/instruments/contrabaixo-acustico.jpg';
+&nbsp;
+import tromboneImage from '../assets/instruments/trombone.jpg';
+import trompaImage from '../assets/instruments/trompa.png';
+import trompeteImage from '../assets/instruments/trompete.jpg';
+import tubaImage from '../assets/instruments/tuba.webp';
+&nbsp;
+import timpanosImage from '../assets/instruments/timpanos.jpg';
+import pratosImage from '../assets/instruments/pratos.jpg';
+import trianguloImage from '../assets/instruments/triangulo.webp';
+import bateriaImage from '../assets/instruments/bateria.jpg';
+&nbsp;
+import metalofoneImage from '../assets/instruments/metalofone.jpg';
+import xilofoneImage from '../assets/instruments/xilofone.webp';
+import vibrafoneImage from '../assets/instruments/vibrafone.jpg';
+import sinosImage from '../assets/instruments/sinos.jpeg';
+import tubosImage from '../assets/instruments/tubos-sonoros.jpg';
+&nbsp;
+import pianoImage from '../assets/instruments/piano.webp';
+import tecladoImage from '../assets/instruments/teclado.webp';
+import orgaoImage from '../assets/instruments/orgao.webp';
+import sanfonaImage from '../assets/instruments/sanfona.webp';
+import escaletaImage from '../assets/instruments/escaleta.webp';
+&nbsp;
+import flautaDoceImage from '../assets/instruments/flauta-doce.jpg';
+import flautaTransversalImage from '../assets/instruments/flauta-transversal.png';
+import clarineteImage from '../assets/instruments/clarinete.png';
+import oboeImage from '../assets/instruments/oboe.webp';
+import fagoteImage from '../assets/instruments/fagote.jpg';
+import saxofoneImage from '../assets/instruments/saxofone.jpeg';
+&nbsp;
+import violaoImage from '../assets/instruments/violão.jpg';
+import violaCaipiraImage from '../assets/instruments/viola-caipira.jpeg';
+import guitarraImage from '../assets/instruments/guitarra.jpeg';
+import contrabaixoImage from '../assets/instruments/contrabaixo-eletrico.jpeg';
+import ukeleleImage from '../assets/instruments/ukelele.jpeg';
+import cavaquinhoImage from '../assets/instruments/cavaquinho.webp';
+import banjoImage from '../assets/instruments/banjo.jpeg';
+import harpaImage from '../assets/instruments/harpa.jpeg';
+&nbsp;
+&nbsp;
+export const instrumentFamilies: Array&lt;string&gt; = [
+    "Cordas de arco",
+    "Cordas dedilhadas",
+    "Metais",
+    "Madeiras",
+    "Percussao Ritmica",
+    "Percussao Melodica",
+    "Teclas"
+];
+&nbsp;
+export const instrumentsByFamily: { [key: string]: Array&lt;{ id: number, name: string, audio: string, image: string }&gt; } = {
+    "Cordas de arco": [
+        { id: 1, name: "Violino", audio: violinoAudio, image: violinoImage },
+        { id: 2, name: "Viola Clássica", audio: violaAudio, image: violaImage },
+        { id: 3, name: "Violoncelo", audio: violonceloAudio, image: violonceloImage },
+        { id: 4, name: "Contrabaixo Acústico", audio: contrabaixoAcusticoAudio, image: contrabaixoAcusticoImage }
+    ],
+    "Metais": [
+        { id: 1, name: "Trompete", audio: trompeteAudio, image: trompeteImage },
+        { id: 2, name: "Trombone", audio: tromboneAudio, image: tromboneImage },
+        { id: 3, name: "Trompa", audio: trompaAudio, image: trompaImage },
+        { id: 4, name: "Tuba", audio: tubaAudio, image: tubaImage }
+    ],
+    "Percussao Ritmica": [
+        { id: 1, name: "Tímpanos", audio: timpanosAudio, image: timpanosImage},
+        { id: 2, name: "Pratos", audio: pratosAudio, image: pratosImage },
+        { id: 3, name: "Triângulo", audio: trianguloAudio, image: trianguloImage },
+        { id: 4, name: "Bateria", audio: bateriaAudio, image: bateriaImage }
+    ],
+    "Percussao Melodica": [
+        { id: 1, name: "Metalofone", audio: metalofoneAudio, image: metalofoneImage },
+        { id: 2, name: "Xilofone", audio: xilofoneAudio, image: xilofoneImage },
+        { id: 3, name: "Vibrafone", audio: vibrafoneAudio, image: vibrafoneImage },
+        { id: 4, name: "Sinos", audio: sinosAudio, image: sinosImage },
+        { id: 5, name: "Tubos Sonoros", audio: tubosSonorosAudio, image: tubosImage }
+    ],
+    "Teclas": [
+        { id: 1, name: "Piano", audio: pianoAudio, image: pianoImage },
+        { id: 2, name: "Teclado", audio: tecladoAudio, image: tecladoImage },
+        { id: 3, name: "Órgão", audio: orgaoAudio, image: orgaoImage },
+        { id: 4, name: "Sanfona", audio: sanfonaAudio, image: sanfonaImage },
+        { id: 5, name: "Escaleta", audio: escaletaAudio, image: escaletaImage }
+    ],
+    "Madeiras": [
+        { id: 1, name: "Flauta Doce", audio: flautaDoceAudio, image: flautaDoceImage },
+        { id: 2, name: "Flauta Transversal", audio: flautaTransversalAudio, image: flautaTransversalImage },
+        { id: 3, name: "Clarinete", audio: clarineteAudio, image: clarineteImage },
+        { id: 4, name: "Oboé", audio: oboeAudio, image: oboeImage },
+        { id: 5, name: "Fagote", audio: fagoteAudio, image: fagoteImage },
+        { id: 6, name: "Saxofone", audio: saxofoneAudio, image: saxofoneImage }
+    ],
+    "Cordas dedilhadas": [
+        { id: 1, name: "Violão", audio: violaoAudio, image: violaoImage },
+        { id: 2, name: "Viola Caipira", audio: violaCaipiraAudio, image: violaCaipiraImage },
+        { id: 3, name: "Guitarra Elétrica", audio: guitarraAudio, image: guitarraImage },
+        { id: 4, name: "Contrabaixo Elétrico", audio: contrabaixoEletricoaAudio, image: contrabaixoImage },
+        { id: 5, name: "Ukelele", audio: ukeleleAudio, image: ukeleleImage },
+        { id: 6, name: "Cavaquinho", audio: cavaquinhoAudio, image: cavaquinhoImage },
+        { id: 7, name: "Banjo", audio: banjoAudio, image: banjoImage },
+        { id: 8, name: "Harpa", audio: harpaAudio, image: harpaImage }
+    ]
+};</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-03-03T00:04:58.248Z
+            </div>
+        <script src="../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
+    </body>
+</html>
+    

@@ -4,8 +4,6 @@ import { GameProvider } from './contexts/GameContext';
 import { GameStatsProvider } from './contexts/GameStatsContext';
 import { AudioProvider } from './contexts/AudioContext';
 import ErrorBoundary from './components/ErrorBoundary';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import Loading from './components/Loading';
 import { Toaster } from 'sonner';
@@ -35,7 +33,6 @@ function App() {
                     />
                   </Routes>
                 </Suspense>
-                <ToastContainer />
                 <Toaster richColors position="top-center" />
               </div>
             </GameStatsProvider>

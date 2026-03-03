@@ -6,8 +6,17 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const selectedFamilies = localStorage.getItem('selectedFamilies');
-    
-    if (!selectedFamilies || JSON.parse(selectedFamilies).length === 0) {
+
+    if (!selectedFamilies) {
+        return <Navigate to="/" replace />;
+    }
+
+    try {
+        const parsed = JSON.parse(selectedFamilies);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+            return <Navigate to="/" replace />;
+        }
+    } catch {
         return <Navigate to="/" replace />;
     }
 

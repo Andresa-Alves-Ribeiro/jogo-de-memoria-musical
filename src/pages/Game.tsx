@@ -1,14 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { FlippableCard } from "../components/FlippableCard";
-import { ShowInstrument } from "../components/showInstrument";
-import { Toaster } from "sonner";
+import { ShowInstrument } from "../components/ShowInstrument";
 import { useGame } from "../contexts/GameContext";
 import { useGameStats } from "../contexts/GameStatsContext";
 import { useGameSounds } from "../hooks/useGameSounds";
 import { GameStats } from "../components/GameStats";
 import { useState, useEffect, useRef } from "react";
-import ConfirmModal from "@/components/confirmModal";
+import ConfirmModal from "@/components/ConfirmModal";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Pause, Play } from "@phosphor-icons/react";
 import imageMenu from "../assets/images/image-menu.png";
@@ -239,7 +236,6 @@ export default function Game() {
                 title="Desistir do Jogo"
                 message="Tem certeza que deseja desistir do jogo? Todo o progresso será perdido."
             />
-            <Toaster richColors position="top-center" className="h-44" />
         </div>
     );
 }

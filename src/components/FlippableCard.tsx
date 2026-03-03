@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { useEffect, useRef, useState } from 'react';
 import '../App.css';
 
@@ -33,10 +30,8 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
 }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [glitchEffect, setGlitchEffect] = useState(false);
-    const isLastPair = useRef(false);
-    const glitchIntervalRef = useRef<number | null>(null);
+    const glitchIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const isFirstFlip = useRef(true);
 
     // Função para ativar efeito de glitch
     const triggerGlitch = () => {
@@ -127,6 +122,7 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
                 relative w-full h-48
                 perspective-1000
                 ${isClickable ? "cursor-pointer" : "cursor-default"}
+                ${glitchEffect ? "glitch-effect" : ""}
             `}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
