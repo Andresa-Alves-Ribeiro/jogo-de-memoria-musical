@@ -22,6 +22,7 @@ export default function Game() {
         matchedInstrument,
         handleFlip,
         handleHideInstrumentModal,
+        handleAudioEnded,
         initializeGame
     } = useGame();
 
@@ -199,10 +200,11 @@ export default function Game() {
                     {cards.map((card, index) => {
                         const isFlipped = selectedCards.includes(card) || matchedCards.includes(card);
                         const isDisabled = matchedCards.includes(card);
-                        // Toca áudio do primeiro card; no segundo, só toca se for instrumento diferente (evita tocar 2x ao acertar o par)
-                        const isFirstCard = selectedCards.length > 0 && selectedCards[0] === card;
-                        const isSecondCardDifferent = selectedCards.length === 2 && selectedCards[0]?.audio !== card.audio;
-                        const shouldPlayAudio = isFirstCard || isSecondCardDifferent;
+                        // Ao clicar no segundo card: primeiro para, segundo toca até o fim (exceto em match, evita tocar 2x)
+                        // Ao clicar no segundo card novamente: desseleciona (handleFlip já trata)
+                        const isFirstCardOnly = selectedCards.length === 1 && selectedCards[0] === card;
+                        const isSecondCardDifferent = selectedCards.length === 2 && selectedCards[1] === card && selectedCards[0]?.audio !== card.audio;
+                        const shouldPlayAudio = isFirstCardOnly || isSecondCardDifferent;
                         return (
                             <FlippableCard
                                 key={index}
@@ -217,6 +219,7 @@ export default function Game() {
                                 name={card.name}
                                 audio={card.audio}
                                 onClick={() => handleFlip(card)}
+                                onAudioEnded={handleAudioEnded}
                             />
                         );
                     })}

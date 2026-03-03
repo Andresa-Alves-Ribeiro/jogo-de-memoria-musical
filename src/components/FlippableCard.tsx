@@ -13,6 +13,7 @@ interface FlippableCardProps {
     name?: string;
     audio?: string;
     onClick: () => void;
+    onAudioEnded?: () => void; // Chamado quando o áudio termina (para virar cards de volta quando não há match)
 }
 
 export const FlippableCard: React.FC<FlippableCardProps> = ({
@@ -26,7 +27,8 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
     image,
     name,
     audio,
-    onClick
+    onClick,
+    onAudioEnded
 }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [glitchEffect, setGlitchEffect] = useState(false);
@@ -56,7 +58,9 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
         };
     }, [isFlipped, isDisabled]);
 
-    // Efeito para reproduzir áudio quando o card é virado (apenas 1x ao acertar o par)
+    // Efeito para reproduzir áudio quando o card é virado
+    // Ao clicar no segundo card: primeiro para (shouldPlayAudio=false), segundo toca até o fim
+    // Ao clicar no segundo card novamente: desseleciona, card desvira e áudio para
     useEffect(() => {
         if (isFlipped && audio && !isDisabled && shouldPlayAudio) {
             // Parar qualquer áudio que esteja tocando
@@ -65,17 +69,35 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
                 audioRef.current.currentTime = 0;
             }
 
-            // Criar e tocar novo áudio
-            audioRef.current = new Audio(audio);
-            audioRef.current.play()
+            const audioEl = new Audio(audio);
+            audioRef.current = audioEl;
+
+            const handleEnded = () => {
+                onAudioEnded?.();
+            };
+            const handleError = () => {
+                onAudioEnded?.();
+            };
+
+            audioEl.addEventListener('ended', handleEnded);
+            audioEl.addEventListener('error', handleError);
+
+            audioEl.play()
                 .then(() => console.log('Áudio reproduzido com sucesso'))
-                .catch(error => console.error('Erro ao reproduzir áudio:', error));
-        } else if (!isFlipped && audioRef.current) {
-            // Parar o áudio quando o card é desvirado
+                .catch(() => {
+                    handleError();
+                });
+
+            return () => {
+                audioEl.removeEventListener('ended', handleEnded);
+                audioEl.removeEventListener('error', handleError);
+            };
+        } else if ((!isFlipped || !shouldPlayAudio) && audioRef.current) {
+            // Parar o áudio quando o card é desvirado OU quando outro card deve tocar (ex: segundo card clicado)
             audioRef.current.pause();
             audioRef.current.currentTime = 0;
         }
-    }, [isFlipped, audio, isDisabled, shouldPlayAudio]);
+    }, [isFlipped, audio, isDisabled, shouldPlayAudio, onAudioEnded]);
 
     // Parar o áudio quando o modal do instrumento for fechado
     useEffect(() => {

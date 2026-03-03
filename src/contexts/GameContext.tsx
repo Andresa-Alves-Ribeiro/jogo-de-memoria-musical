@@ -23,6 +23,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
     const isInitialized = useRef(false);
     const gameStateRef = useRef(gameState);
+    const flipBackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Update ref when state changes
     useEffect(() => {
@@ -95,6 +96,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
+    // Limpar timeout de fallback quando selectedCards deixar de ter 2 itens (ex: usuário desselecionou)
+    useEffect(() => {
+        if (gameState.selectedCards.length !== 2 && flipBackTimeoutRef.current) {
+            clearTimeout(flipBackTimeoutRef.current);
+            flipBackTimeoutRef.current = null;
+        }
+    }, [gameState.selectedCards.length]);
+
     // Check for matches
     useEffect(() => {
         const { selectedCards, matchedCards } = gameStateRef.current;
@@ -109,13 +118,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                     showInstrumentModal: true,
                 }));
             } else {
-                // Se não houver match, espera 1 segundo e vira os cards de volta
-                setTimeout(() => {
-                    setGameState(prev => ({
-                        ...prev,
-                        selectedCards: [],
-                    }));
-                }, 1000);
+                // Se não houver match, aguarda o áudio do segundo card terminar (handleAudioEnded)
+                // Fallback de 15s caso o áudio falhe ou não dispare 'ended'
+                if (flipBackTimeoutRef.current) clearTimeout(flipBackTimeoutRef.current);
+                flipBackTimeoutRef.current = setTimeout(() => {
+                    flipBackTimeoutRef.current = null;
+                    setGameState(prev => ({ ...prev, selectedCards: [] }));
+                }, 15000);
             }
         }
     }, [gameState.selectedCards]);
@@ -139,6 +148,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const { selectedCards } = gameStateRef.current;
         if (selectedCards.length === 1) {
             return;
+        }
+        if (flipBackTimeoutRef.current) {
+            clearTimeout(flipBackTimeoutRef.current);
+            flipBackTimeoutRef.current = null;
         }
         setGameState(prev => ({ ...prev, selectedCards: [] }));
     }, []);
