@@ -52,7 +52,6 @@ export default function Game() {
         navigate('/', { replace: true });
     }
 
-    // Iniciar o jogo quando o componente montar
     useEffect(() => {
         initializeGame();
         startGame();
@@ -61,24 +60,20 @@ export default function Game() {
         };
     }, [initializeGame, startGame, pauseGame]);
 
-    // Atualizar pontuação quando encontrar pares
     useEffect(() => {
         const pairsFound = matchedCards.length / 2;
         const totalPairs = cards.length / 2;
 
-        // Só atualiza a pontuação se houver pares encontrados e se o número de pares mudou
         if (pairsFound > 0 && pairsFound !== lastScoreUpdate.current) {
             lastScoreUpdate.current = pairsFound;
             updateScore(pairsFound, totalPairs);
         }
 
-        // Verificar vitória
         if (pairsFound === totalPairs && totalPairs > 0) {
             playVictorySound();
         }
     }, [matchedCards.length, cards.length, updateScore, playVictorySound]);
 
-    // Incrementar tentativas quando selecionar cards
     useEffect(() => {
         if (selectedCards.length === 2) {
             incrementAttempts();
@@ -112,7 +107,6 @@ export default function Game() {
 
     return (
         <div className="w-full min-h-screen flex flex-col items-center justify-start relative overflow-hidden py-6">
-            {/* Plano de fundo desfocado */}
             <div
                 className="absolute inset-0 z-0"
                 style={{
@@ -124,20 +118,15 @@ export default function Game() {
                     transform: 'scale(1.1)',
                 }}
             />
-            {/* Overlay escuro para legibilidade */}
             <div
                 className="absolute inset-0 z-0"
                 style={{
                     background: 'linear-gradient(to bottom, rgba(50,50,50,0.7) 0%, rgba(63,63,63,0.7) 50%, rgba(28,28,28,0.7) 100%)',
                 }}
             />
-            {/* Efeito de grade de fundo */}
             <div className="absolute inset-0 z-[1] bg-[linear-gradient(rgba(128,128,128,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(128,128,128,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
-
-            {/* Efeito de scanline */}
             <div className="absolute inset-0 z-[1] bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.1)_0px,rgba(0,0,0,0.1)_2px,transparent_2px,transparent_4px)] opacity-50"></div>
 
-            {/* Botão de desistir */}
             <div className="absolute top-4 left-4 z-20">
                 <button
                     onClick={handleSurrender}
@@ -151,7 +140,6 @@ export default function Game() {
                 </button>
             </div>
 
-            {/* Botão de teste de áudio */}
             <div className="absolute top-4 right-4 z-20">
                 <button
                     onClick={handleTestAudio}
@@ -165,7 +153,6 @@ export default function Game() {
                 </button>
             </div>
 
-            {/* Header com contador e botão de pause */}
             <div className="w-max max-w-7xl px-2 sm:px-6 lg:px-8 relative z-10">
                 <div className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 flex items-center justify-end gap-6 border border-gray-700/50 shadow-lg">
                     <GameStats />
@@ -194,14 +181,11 @@ export default function Game() {
                 </div>
             </div>
 
-            {/* Grid de cards */}
             <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
                     {cards.map((card, index) => {
                         const isFlipped = selectedCards.includes(card) || matchedCards.includes(card);
                         const isDisabled = matchedCards.includes(card);
-                        // Ao clicar no segundo card: primeiro para, segundo toca até o fim (exceto em match, evita tocar 2x)
-                        // Ao clicar no segundo card novamente: desseleciona (handleFlip já trata)
                         const isFirstCardOnly = selectedCards.length === 1 && selectedCards[0] === card;
                         const isSecondCardDifferent = selectedCards.length === 2 && selectedCards[1] === card && selectedCards[0]?.audio !== card.audio;
                         const shouldPlayAudio = isFirstCardOnly || isSecondCardDifferent;

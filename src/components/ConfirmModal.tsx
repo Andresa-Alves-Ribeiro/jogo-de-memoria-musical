@@ -13,20 +13,14 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            {/* Overlay com efeito de grade */}
             <div className="absolute inset-0 bg-black/85 backdrop-blur-sm">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(128,128,128,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(128,128,128,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
             </div>
 
-            {/* Modal */}
             <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-gray-600 rounded-lg p-6 w-[90%] max-w-md shadow-lg">
-                {/* Efeito de scanline */}
                 <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.1)_0px,rgba(0,0,0,0.1)_2px,transparent_2px,transparent_4px)] opacity-50 rounded-lg"></div>
-
-                {/* Grade de fundo */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(128,128,128,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(128,128,128,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 rounded-lg"></div>
 
-                {/* Conteúdo */}
                 <div className="relative z-10">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-white kode-mono-font text-xl font-bold tracking-wider">{title}</h2>

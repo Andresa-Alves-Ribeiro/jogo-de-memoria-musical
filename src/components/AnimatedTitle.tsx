@@ -8,8 +8,6 @@ interface AnimatedTitleProps {
 const AnimatedTitle: React.FC<AnimatedTitleProps> = ({ text, className = '' }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
 
-
-  // Dividir o texto em letras para aplicar cores diferentes
   const letters = text.split('').map((letter, index) => {
     const animationDelay = `${index * 0.1}s`;
 

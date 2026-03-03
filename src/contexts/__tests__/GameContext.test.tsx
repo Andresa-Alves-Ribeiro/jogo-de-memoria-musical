@@ -2,12 +2,10 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { GameProvider, useGame } from '../GameContext';
 import { vi } from 'vitest';
 
-// Mock do react-router-dom
 vi.mock('react-router-dom', () => ({
   useNavigate: () => vi.fn(),
 }));
 
-// Mock do sonner (deve ser definido com vi.hoisted para uso no vi.mock)
 const mockToast = vi.hoisted(() => ({
   success: vi.fn(),
   error: vi.fn(),

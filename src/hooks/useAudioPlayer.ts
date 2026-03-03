@@ -4,26 +4,19 @@ export const useAudioPlayer = (audioSrc: string | undefined) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Inicializar o áudio quando o componente montar ou o src mudar
   useEffect(() => {
     if (audioSrc) {
-      // Criar um novo elemento de áudio
       const audio = new Audio(audioSrc);
-      
-      // Configurar eventos
+
       audio.addEventListener('ended', () => setIsPlaying(false));
       audio.addEventListener('error', (e) => {
         console.error('Erro ao carregar áudio:', e);
         setIsPlaying(false);
       });
-      
-      // Armazenar a referência
+
       audioRef.current = audio;
-      
-      // Pré-carregar o áudio
       audio.load();
-      
-      // Limpar ao desmontar
+
       return () => {
         audio.pause();
         audio.currentTime = 0;
@@ -34,10 +27,8 @@ export const useAudioPlayer = (audioSrc: string | undefined) => {
     }
   }, [audioSrc]);
 
-  // Função para tocar o áudio
   const play = () => {
     if (audioRef.current) {
-      // Parar qualquer outro áudio que esteja tocando
       const allAudios = document.querySelectorAll('audio');
       allAudios.forEach(audio => {
         if (audio !== audioRef.current) {
@@ -45,8 +36,7 @@ export const useAudioPlayer = (audioSrc: string | undefined) => {
           audio.currentTime = 0;
         }
       });
-      
-      // Tocar o áudio atual
+
       audioRef.current.currentTime = 0;
       const playPromise = audioRef.current.play();
       
@@ -64,7 +54,6 @@ export const useAudioPlayer = (audioSrc: string | undefined) => {
     }
   };
 
-  // Função para parar o áudio
   const stop = () => {
     if (audioRef.current) {
       audioRef.current.pause();

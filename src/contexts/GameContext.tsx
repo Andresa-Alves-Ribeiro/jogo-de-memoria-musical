@@ -25,7 +25,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     const gameStateRef = useRef(gameState);
     const flipBackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Update ref when state changes
     useEffect(() => {
         gameStateRef.current = gameState;
     }, [gameState]);
@@ -96,7 +95,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
-    // Limpar timeout de fallback quando selectedCards deixar de ter 2 itens (ex: usuário desselecionou)
     useEffect(() => {
         if (gameState.selectedCards.length !== 2 && flipBackTimeoutRef.current) {
             clearTimeout(flipBackTimeoutRef.current);
@@ -104,7 +102,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
     }, [gameState.selectedCards.length]);
 
-    // Check for matches
     useEffect(() => {
         const { selectedCards, matchedCards } = gameStateRef.current;
         if (selectedCards.length === 2) {
@@ -118,8 +115,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                     showInstrumentModal: true,
                 }));
             } else {
-                // Se não houver match, aguarda o áudio do segundo card terminar (handleAudioEnded)
-                // Fallback de 15s caso o áudio falhe ou não dispare 'ended'
                 if (flipBackTimeoutRef.current) clearTimeout(flipBackTimeoutRef.current);
                 flipBackTimeoutRef.current = setTimeout(() => {
                     flipBackTimeoutRef.current = null;
@@ -129,7 +124,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
     }, [gameState.selectedCards]);
 
-    // Check for win condition
     useEffect(() => {
         const { matchedCards, cards } = gameStateRef.current;
         if (matchedCards.length === cards.length && cards.length > 0) {

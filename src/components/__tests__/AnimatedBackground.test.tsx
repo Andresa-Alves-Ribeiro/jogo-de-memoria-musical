@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import AnimatedBackground from '../AnimatedBackground';
 import { vi } from 'vitest';
 
-// Mock phosphor icons
 vi.mock('@phosphor-icons/react', () => ({
   MusicNote: () => <div data-testid="music-note">MusicNote</div>,
   MusicNotes: () => <div data-testid="music-notes">MusicNotes</div>,

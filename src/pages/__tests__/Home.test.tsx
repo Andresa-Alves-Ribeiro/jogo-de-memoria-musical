@@ -3,7 +3,6 @@ import { vi } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 import Home from '../Home';
 
-// Mock useMenuHoverSound
 vi.mock('../../hooks/useMenuHoverSound', () => ({
   useMenuHoverSound: () => vi.fn(),
 }));

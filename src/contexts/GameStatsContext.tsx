@@ -29,7 +29,6 @@ export function GameStatsProvider({ children }: { children: React.ReactNode }) {
         isPlaying: false
     });
 
-    // Timer effect
     useEffect(() => {
         let interval: ReturnType<typeof setInterval>;
         if (stats.isPlaying) {
@@ -67,10 +66,8 @@ export function GameStatsProvider({ children }: { children: React.ReactNode }) {
         setStats(prev => {
             const completionRatio = pairsFound / totalPairs;
             const timePenalty = prev.time * 10;
-            // Penaliza apenas tentativas extras (erros); mínimo necessário = totalPairs
             const excessAttempts = Math.max(0, prev.attempts - totalPairs);
             const attemptsPenalty = excessAttempts * 50;
-            // Pontuação máxima sempre 1000: jogo perfeito = 1000, deduz tempo e erros
             const maxPossible = Math.max(0, 1000 - timePenalty - attemptsPenalty);
             const newScore = Math.min(1000, Math.max(0, completionRatio * maxPossible));
 

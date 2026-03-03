@@ -41,27 +41,10 @@ function Home() {
     }, [menuOptions, selectedOption]);
 
     useEffect(() => {
-        try {
-            const storedFamilies = localStorage.getItem('selectedFamilies');
-            if (storedFamilies) {
-                const selectedFamilies = JSON.parse(storedFamilies);
-                if (selectedFamilies.length > 0) {
-                    // Não redirecionar automaticamente, deixar o usuário escolher
-                    // navigate('/game');
-                }
-            }
-        } catch (error) {
-            console.error('Error loading families from localStorage:', error);
-        }
-    }, [navigate]);
-
-    useEffect(() => {
-        // Set initial focus when component mounts
         if (menuRef.current) {
             menuRef.current.focus();
         }
 
-        // Add global keyboard event listener
         const handleGlobalKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'Enter') {
                 e.preventDefault();

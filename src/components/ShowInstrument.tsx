@@ -12,21 +12,18 @@ interface ShowInstrumentProps {
 export function ShowInstrument({ show, onHide, instrument }: ShowInstrumentProps) {
     useEffect(() => {
         if (show && instrument) {
-            // Explosão da esquerda
             confetti({
                 particleCount: 80,
                 angle: 60,
                 spread: 55,
                 origin: { x: 0, y: 0.7 },
             });
-            // Explosão da direita
             confetti({
                 particleCount: 80,
                 angle: 120,
                 spread: 55,
                 origin: { x: 1, y: 0.7 },
             });
-            // Explosão do centro (cobre a tela toda)
             confetti({
                 particleCount: 100,
                 spread: 100,
@@ -41,23 +38,19 @@ export function ShowInstrument({ show, onHide, instrument }: ShowInstrumentProps
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Overlay */}
             <div
                 className="absolute inset-0 bg-black/85 backdrop-blur-sm"
                 onClick={onHide}
                 aria-hidden="true"
             />
-            {/* Conteúdo da grade */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(128,128,128,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(128,128,128,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 pointer-events-none" />
 
-            {/* Modal centralizado */}
             <div
                 className="relative bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-gray-600 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="instrument-modal-title"
             >
-                {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-600">
                     <h2 id="instrument-modal-title" className="text-zinc-200 title-font text-xl sm:text-2xl md:text-3xl">
                         {instrument.name}
@@ -71,7 +64,6 @@ export function ShowInstrument({ show, onHide, instrument }: ShowInstrumentProps
                     </button>
                 </div>
 
-                {/* Body com imagem centralizada */}
                 <div className="flex-1 flex items-center justify-center p-6 min-h-0">
                     <div className="w-full h-full flex items-center justify-center">
                         <img

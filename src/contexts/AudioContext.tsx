@@ -17,28 +17,23 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const playAudio = useCallback(async (audioSrc: string) => {
     try {
       console.log('Tentando reproduzir áudio:', audioSrc);
-      
-      // Se já estiver tocando o mesmo áudio, não faz nada
+
       if (currentAudioSrc.current === audioSrc && isPlaying) {
         console.log('Áudio já está tocando');
         return;
       }
 
-      // Parar qualquer áudio que esteja tocando
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
       }
 
-      // Verificar se o áudio já está em cache
       let audio = audioCache.current.get(audioSrc);
-      
+
       if (!audio) {
-        // Se não estiver em cache, criar novo elemento de áudio
         audio = new Audio(audioSrc);
         audioCache.current.set(audioSrc, audio);
-        
-        // Configurar evento de fim
+
         audio.onended = () => {
           setIsPlaying(false);
           currentAudioSrc.current = null;
@@ -47,8 +42,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       audioRef.current = audio;
       currentAudioSrc.current = audioSrc;
-      
-      // Tocar o áudio
+
       await audio.play();
       console.log('Áudio reproduzido com sucesso');
       setIsPlaying(true);

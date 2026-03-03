@@ -6,14 +6,14 @@ interface FlippableCardProps {
     isFlipped: boolean;
     isDisabled: boolean;
     isSelected?: boolean;
-    shouldPlayAudio?: boolean; // Evita tocar o mesmo instrumento 2x ao acertar o par
-    isPlaying?: boolean; // Bloqueia cliques quando o jogo está pausado
-    showInstrumentModal?: boolean; // Usado para parar o áudio quando o modal é fechado
+    shouldPlayAudio?: boolean;
+    isPlaying?: boolean;
+    showInstrumentModal?: boolean;
     image?: string;
     name?: string;
     audio?: string;
     onClick: () => void;
-    onAudioEnded?: () => void; // Chamado quando o áudio termina (para virar cards de volta quando não há match)
+    onAudioEnded?: () => void;
 }
 
 export const FlippableCard: React.FC<FlippableCardProps> = ({
@@ -35,13 +35,11 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
     const glitchIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    // Função para ativar efeito de glitch
     const triggerGlitch = () => {
         setGlitchEffect(true);
         setTimeout(() => setGlitchEffect(false), 200);
     };
 
-    // Efeito de glitch aleatório
     useEffect(() => {
         if (isFlipped && !isDisabled) {
             glitchIntervalRef.current = window.setInterval(() => {
@@ -58,12 +56,8 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
         };
     }, [isFlipped, isDisabled]);
 
-    // Efeito para reproduzir áudio quando o card é virado
-    // Ao clicar no segundo card: primeiro para (shouldPlayAudio=false), segundo toca até o fim
-    // Ao clicar no segundo card novamente: desseleciona, card desvira e áudio para
     useEffect(() => {
         if (isFlipped && audio && !isDisabled && shouldPlayAudio) {
-            // Parar qualquer áudio que esteja tocando
             if (audioRef.current) {
                 audioRef.current.pause();
                 audioRef.current.currentTime = 0;
@@ -93,13 +87,11 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
                 audioEl.removeEventListener('error', handleError);
             };
         } else if ((!isFlipped || !shouldPlayAudio) && audioRef.current) {
-            // Parar o áudio quando o card é desvirado OU quando outro card deve tocar (ex: segundo card clicado)
             audioRef.current.pause();
             audioRef.current.currentTime = 0;
         }
     }, [isFlipped, audio, isDisabled, shouldPlayAudio, onAudioEnded]);
 
-    // Parar o áudio quando o modal do instrumento for fechado
     useEffect(() => {
         if (!showInstrumentModal && isDisabled && audioRef.current) {
             audioRef.current.pause();
@@ -107,7 +99,6 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
         }
     }, [showInstrumentModal, isDisabled]);
 
-    // Limpar ao desmontar
     useEffect(() => {
         return () => {
             if (audioRef.current) {
@@ -150,7 +141,6 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
             onMouseLeave={handleMouseLeave}
             onClick={handleClick}
         >
-            {/* Frente do card */}
             <div className={`
                 absolute inset-0
                 flex items-center justify-center
@@ -165,7 +155,6 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
                 </div>
             </div>
 
-            {/* Verso do card */}
             <div className={`
                 absolute inset-0
                 flex items-center justify-center
@@ -198,7 +187,6 @@ export const FlippableCard: React.FC<FlippableCardProps> = ({
                 )}
             </div>
 
-            {/* Efeito de borda - apenas para cards clicáveis (não combinados e jogo em andamento) */}
             {isClickable && (
                 <div className={`
                     absolute -inset-1
