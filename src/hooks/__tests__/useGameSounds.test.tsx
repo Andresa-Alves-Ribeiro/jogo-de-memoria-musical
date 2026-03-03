@@ -13,6 +13,5 @@ describe('useGameSounds', () => {
     act(() => {
       result.current.playVictorySound();
     });
-    // Audio is mocked, so we just verify no error
   });
 });

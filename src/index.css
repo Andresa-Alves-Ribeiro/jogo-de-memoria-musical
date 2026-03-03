@@ -37,7 +37,6 @@ body {
   height: 100%;
 }
 
-/* Efeito de glitch para o título */
 .glitch {
   animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both;
 }
@@ -63,7 +62,6 @@ body {
   }
 }
 
-/* Efeito de pulsação para o botão de início */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -85,7 +83,6 @@ body {
   animation: pulse 2s infinite;
 }
 
-/* Efeito de brilho para elementos */
 @keyframes shine {
   0% {
     background-position: -100% 50%;
@@ -104,7 +101,6 @@ body {
   animation: shine 3s infinite;
 }
 
-/* Efeito de partículas flutuantes */
 @keyframes float {
   0% {
     transform: translateY(0px);
@@ -121,7 +117,6 @@ body {
   animation: float 6s ease-in-out infinite;
 }
 
-/* Efeito de neon para textos */
 .neon-text {
   text-shadow: 
     0 0 5px #fff,
@@ -133,7 +128,6 @@ body {
     0 0 75px #ff1177;
 }
 
-/* Efeito de borda brilhante */
 .glow-border {
   box-shadow: 
     0 0 5px #fff,

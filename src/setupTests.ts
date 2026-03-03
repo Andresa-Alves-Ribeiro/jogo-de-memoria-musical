@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
-// Mock do localStorage com armazenamento real para testes
 const storage: Record<string, string> = {};
 const localStorageMock = {
   getItem: vi.fn((key: string) => storage[key] ?? null),
@@ -22,7 +21,6 @@ const localStorageMock = {
 
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
-// Mock do Audio
 class AudioMock {
   play = vi.fn().mockResolvedValue(undefined);
   pause = vi.fn();
@@ -35,7 +33,6 @@ class AudioMock {
 
 Object.defineProperty(window, 'Audio', { value: AudioMock });
 
-// Mock do canvas-confetti
 vi.mock('canvas-confetti', () => ({
   default: vi.fn(),
 })); 

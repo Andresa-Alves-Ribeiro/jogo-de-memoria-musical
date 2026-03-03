@@ -204,7 +204,6 @@ p {
   transform: none !important;
 }
 
-/* Ajuste para o container da imagem */
 .card.disabled .flex {
   width: 100%;
   height: 100%;
@@ -218,7 +217,6 @@ p {
   transition: none !important;
 }
 
-/* Ajuste para o texto abaixo da imagem */
 .card.disabled .text-white {
   font-size: 1rem;
   font-weight: bold;
@@ -230,7 +228,6 @@ p {
   transition: none !important;
 }
 
-/* Ajuste para o verso do card quando está combinado */
 .card.disabled .backface-hidden {
   transform: none !important;
   backface-visibility: visible;
@@ -240,14 +237,12 @@ p {
   box-shadow: none;
 }
 
-/* Remover efeito neon-border dos cards combinados */
 .card.disabled.neon-border {
   border: none;
   box-shadow: none;
   animation: none !important;
 }
 
-/* Classe para remover todas as animações */
 .no-animation {
   animation: none !important;
   transition: none !important;
@@ -258,7 +253,6 @@ p {
   transition: none !important;
 }
 
-/* Estilo específico para imagens em cards combinados */
 .card.disabled img {
   display: block;
   width: 100%;
@@ -823,7 +817,6 @@ p {
   }
 }
 
-/* Efeito de código binário */
 .binary-bg {
   position: absolute;
   top: 0;
@@ -849,12 +842,10 @@ p {
   }
 }
 
-/* Efeito de scanline animado */
 .animate-scanline {
   animation: scanline 2s linear infinite;
 }
 
-/* Efeito de partículas */
 .particle {
   position: absolute;
   width: 2px;
@@ -864,7 +855,6 @@ p {
   pointer-events: none;
 }
 
-/* Efeito de borda neon pulsante */
 .neon-border-pulse {
   animation: neonBorderPulse 2s infinite alternate;
 }

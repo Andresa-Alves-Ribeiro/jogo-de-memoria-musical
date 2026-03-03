@@ -8,7 +8,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Loading from './components/Loading';
 import { Toaster } from 'sonner';
 
-// Lazy loading dos componentes
 const Home = React.lazy(() => import('./pages/Home'));
 const Game = React.lazy(() => import('./pages/Game'));
 

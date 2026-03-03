@@ -287,7 +287,6 @@
     }
 }
 
-/* Efeito de scanline */
 .game-select-container::before {
     content: '';
     position: absolute;
@@ -307,7 +306,6 @@
     z-index: 1;
 }
 
-/* Grade de fundo */
 .game-select-container::after {
     content: '';
     position: absolute;
@@ -324,7 +322,6 @@
     z-index: 1;
 }
 
-/* Efeito de partículas flutuantes */
 @keyframes float {
     0% {
         transform: translateY(0px);

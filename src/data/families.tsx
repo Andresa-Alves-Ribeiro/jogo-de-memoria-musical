@@ -41,8 +41,6 @@ import pianoAudio from "./audios/teclas/piano.mp3"
 import sanfonaAudio from "./audios/teclas/sanfona.mp3"
 import tecladoAudio from "./audios/teclas/teclado.mp3"
 
-// IMAGENS
-
 import violinoImage from '../assets/instruments/violino.jpg';
 import violonceloImage from '../assets/instruments/violoncelo.jpg';
 import violaImage from '../assets/instruments/viola-classica.jpg';

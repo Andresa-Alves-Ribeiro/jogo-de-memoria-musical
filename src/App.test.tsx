@@ -2,7 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import App from './App';
 
-// Resolve lazy loading for tests
 vi.mock('./pages/Home', () => ({
   default: () => <div>Home Page</div>,
 }));

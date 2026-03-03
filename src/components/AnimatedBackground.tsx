@@ -34,7 +34,6 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => 
   const [notes, setNotes] = useState<Note[]>([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  // Função para atualizar o efeito de pulsar
   const updatePulseEffect = (note: Note) => {
     let newPulseSize = note.pulseSize;
     let newPulseDirection = note.pulseDirection;
@@ -50,7 +49,6 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => 
     return { newPulseSize, newPulseDirection };
   };
 
-  // Função para atualizar o efeito de brilho
   const updateGlowEffect = (note: Note) => {
     let newGlowIntensity = note.glowIntensity;
     let newGlowDirection = note.glowDirection;
@@ -69,16 +67,13 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => 
   const updateNotes = React.useCallback(() => {
     setNotes(prevNotes => {
       return prevNotes.map(note => {
-        // Atualizar posição
         let newX = note.x + note.speedX;
         let newY = note.y + note.speedY;
         const newRotation = note.rotation + note.rotationSpeed;
 
-        // Atualizar efeitos
         const { newPulseSize, newPulseDirection } = updatePulseEffect(note);
         const { newGlowIntensity, newGlowDirection } = updateGlowEffect(note);
 
-        // Verificar limites
         if (newX < -note.size) newX = dimensions.width + note.size;
         if (newX > dimensions.width + note.size) newX = -note.size;
         if (newY < -note.size) newY = dimensions.height + note.size;
@@ -98,7 +93,6 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => 
     });
   }, [dimensions]);
 
-  // Efeito para inicializar as dimensões e as notas
   useEffect(() => {
     const updateDimensions = () => {
       setDimensions({
@@ -115,10 +109,8 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => 
     };
   }, []);
 
-  // Efeito para inicializar as notas quando as dimensões mudarem
   useEffect(() => {
     if (dimensions.width > 0 && dimensions.height > 0) {
-      // Função para inicializar as notas
       const initNotes = () => {
         const newNotes: Note[] = [];
         const numberOfNotes = 50;
@@ -129,12 +121,12 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => 
           'MusicNotesSimple'
         ];
         const colors = [
-          '#FF00FF', // Magenta neon
-          '#00FF00', // Verde neon
-          '#00FFFF', // Ciano neon
-          '#FF0000', // Vermelho neon
-          '#0000FF', // Azul neon
-          '#FFFF00', // Amarelo neon
+          '#FF00FF',
+          '#00FF00',
+          '#00FFFF',
+          '#FF0000',
+          '#0000FF',
+          '#FFFF00',
         ];
 
         for (let i = 0; i < numberOfNotes; i++) {
@@ -164,18 +156,16 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => 
     }
   }, [dimensions]);
 
-  // Efeito para animar as notas
   useEffect(() => {
     if (notes.length === 0) return;
 
-    const animationInterval = setInterval(updateNotes, 16); // Aproximadamente 60 FPS
+    const animationInterval = setInterval(updateNotes, 16);
 
     return () => {
       clearInterval(animationInterval);
     };
   }, [notes, updateNotes]);
 
-  // Função para renderizar um ícone de nota
   const renderNoteIcon = (note: Note) => {
     const containerStyle = {
       position: 'absolute' as const,
@@ -218,7 +208,6 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => 
 
   return (
     <div className="relative w-screen h-full overflow-hidden">
-      {/* Fundo gradiente */}
       <div
         className="absolute top-0 left-0 w-full h-full"
         style={{
@@ -228,13 +217,10 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ children }) => 
         }}
       />
 
-
-      {/* Notas musicais */}
       <div className="absolute top-0 left-0 w-full h-full" style={{ zIndex: 3 }}>
         {notes.map(note => renderNoteIcon(note))}
       </div>
 
-      {/* Conteúdo */}
       <div className="relative z-10 w-full h-full">
         {children}
       </div>

@@ -1,6 +1,5 @@
 import { useCallback, useRef } from 'react';
 
-// Som estilo video game para hover nas opções (Web Audio API)
 export function useMenuHoverSound() {
     const audioContextRef = useRef<AudioContext | null>(null);
 
