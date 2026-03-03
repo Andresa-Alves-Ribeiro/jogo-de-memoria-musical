@@ -13,10 +13,13 @@ Um jogo interativo de memória que combina diversão com aprendizado musical. En
 
 > Adicione suas capturas de tela na pasta `docs/images/` e substitua os caminhos abaixo.
 
-| Tela inicial | Tela do jogo |
-|:---:|:---:|
-| ![Tela inicial](docs/images/tela-inicial.png) | ![Tela do jogo](docs/images/tela-do-jogo.png) |
-| *Menu principal e seleção de instrumentos* | *Partida em andamento* |
+Tela inicial 
+
+<img width="2555" height="1305" alt="Captura de tela 2026-03-02 211226" src="https://github.com/user-attachments/assets/8aaa7eb9-d242-4795-b73e-3d90b0c11ab7" />
+
+Tela do Game
+
+<img width="2554" height="1305" alt="Captura de tela 2026-03-02 211239" src="https://github.com/user-attachments/assets/895b1b88-c0a3-4bf6-8e58-a6f6814321b4" />
 
 ---
 
