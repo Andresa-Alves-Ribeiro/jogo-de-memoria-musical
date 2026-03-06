@@ -7,7 +7,7 @@ import { GameStats } from "../components/GameStats";
 import { useState, useEffect, useRef } from "react";
 import ConfirmModal from "@/components/ConfirmModal";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Pause, Play } from "@phosphor-icons/react";
+import { ArrowLeft, Pause, Play, CaretDown } from "@phosphor-icons/react";
 import imageMenu from "../assets/images/image-menu.png";
 
 export default function Game() {
@@ -36,6 +36,7 @@ export default function Game() {
 
     const { playVictorySound } = useGameSounds();
     const lastScoreUpdate = useRef(0);
+    const victorySoundPlayedRef = useRef(false);
     const testAudioRef = useRef<HTMLAudioElement | null>(null);
 
     const cardListLength = (index: number): number => {
@@ -53,6 +54,7 @@ export default function Game() {
     }
 
     useEffect(() => {
+        victorySoundPlayedRef.current = false;
         initializeGame();
         startGame();
         return () => {
@@ -69,7 +71,8 @@ export default function Game() {
             updateScore(pairsFound, totalPairs);
         }
 
-        if (pairsFound === totalPairs && totalPairs > 0) {
+        if (pairsFound === totalPairs && totalPairs > 0 && !victorySoundPlayedRef.current) {
+            victorySoundPlayedRef.current = true;
             playVictorySound();
         }
     }, [matchedCards.length, cards.length, updateScore, playVictorySound]);
@@ -106,9 +109,10 @@ export default function Game() {
     };
 
     return (
-        <div className="w-full min-h-screen flex flex-col items-center justify-start relative overflow-hidden py-6">
+        <div className="w-full h-screen min-h-0 flex flex-col items-center overflow-y-auto overflow-x-hidden py-6 relative">
+            {/* Fundo fixo para que a rolagem não deixe áreas em branco */}
             <div
-                className="absolute inset-0 z-0"
+                className="fixed inset-0 z-0 pointer-events-none"
                 style={{
                     backgroundImage: `url(${imageMenu})`,
                     backgroundSize: 'cover',
@@ -119,13 +123,18 @@ export default function Game() {
                 }}
             />
             <div
-                className="absolute inset-0 z-0"
+                className="fixed inset-0 z-0 pointer-events-none"
                 style={{
                     background: 'linear-gradient(to bottom, rgba(50,50,50,0.7) 0%, rgba(63,63,63,0.7) 50%, rgba(28,28,28,0.7) 100%)',
                 }}
             />
-            <div className="absolute inset-0 z-[1] bg-[linear-gradient(rgba(128,128,128,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(128,128,128,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
-            <div className="absolute inset-0 z-[1] bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.1)_0px,rgba(0,0,0,0.1)_2px,transparent_2px,transparent_4px)] opacity-50"></div>
+            <div className="fixed inset-0 z-[1] pointer-events-none bg-[linear-gradient(rgba(128,128,128,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(128,128,128,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
+            <div className="fixed inset-0 z-[1] pointer-events-none bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.1)_0px,rgba(0,0,0,0.1)_2px,transparent_2px,transparent_4px)] opacity-50"></div>
+
+            <p className="flex items-center justify-center gap-1.5 text-gray-400/80 text-xs kode-mono-font pt-1 pb-2 relative z-10 flex-shrink-0">
+                <CaretDown className="w-3.5 h-3.5" weight="bold" />
+                A página pode rolar para exibir todos os cartões
+            </p>
 
             <div className="absolute top-4 left-4 z-20">
                 <button
@@ -181,7 +190,7 @@ export default function Game() {
                 </div>
             </div>
 
-            <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10 flex-shrink-0">
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
                     {cards.map((card, index) => {
                         const isFlipped = selectedCards.includes(card) || matchedCards.includes(card);
