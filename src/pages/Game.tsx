@@ -36,6 +36,7 @@ export default function Game() {
 
     const { playVictorySound } = useGameSounds();
     const lastScoreUpdate = useRef(0);
+    const victorySoundPlayedRef = useRef(false);
     const testAudioRef = useRef<HTMLAudioElement | null>(null);
 
     const cardListLength = (index: number): number => {
@@ -53,6 +54,7 @@ export default function Game() {
     }
 
     useEffect(() => {
+        victorySoundPlayedRef.current = false;
         initializeGame();
         startGame();
         return () => {
@@ -69,7 +71,8 @@ export default function Game() {
             updateScore(pairsFound, totalPairs);
         }
 
-        if (pairsFound === totalPairs && totalPairs > 0) {
+        if (pairsFound === totalPairs && totalPairs > 0 && !victorySoundPlayedRef.current) {
+            victorySoundPlayedRef.current = true;
             playVictorySound();
         }
     }, [matchedCards.length, cards.length, updateScore, playVictorySound]);

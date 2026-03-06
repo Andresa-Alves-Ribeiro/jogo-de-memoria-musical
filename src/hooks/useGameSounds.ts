@@ -1,8 +1,11 @@
 import { useCallback } from 'react';
 import victorySound from '../assets/audio/victory.wav';
 
+const victoryAudio = new Audio(victorySound);
+victoryAudio.loop = false;
+
 const sounds = {
-    victory: new Audio(victorySound)
+    victory: victoryAudio
 };
 
 export function useGameSounds() {
